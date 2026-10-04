@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preventivo Centralino AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Documento commerciale a colonna singola: sintesi economica in testa, poi architettura, stime per WP, opzionali, piano, prezzi, rischi */
+:root{
+  --bg:#f5f7fa; --paper:#ffffff; --ink:#0d1b2e; --muted:#56657a; --line:#dde3ec;
+  --navy:#0f2a4a; --cyan:#0aa3c2; --cyan-soft:#e3f6fa; --on-navy:#eaf3fb; --on-navy-muted:#a9bfd6;
+  --good:#12805c; --warn-bg:#fff6dc; --warn-ink:#7a5a00; --bar-soft:#9fdbe8;
+  --f-display:"Sora","Segoe UI",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0a1320; --paper:#0f1c2d; --ink:#e4ecf5; --muted:#93a4ba; --line:#22344b;
+  --navy:#0c2440; --cyan:#35c6e2; --cyan-soft:#0f3140; --on-navy:#eaf3fb; --on-navy-muted:#9db4cc;
+  --good:#3fc795; --warn-bg:#3a3010; --warn-ink:#f0d27a; --bar-soft:#1f5f70; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0a1320; --paper:#0f1c2d; --ink:#e4ecf5; --muted:#93a4ba; --line:#22344b;
+  --navy:#0c2440; --cyan:#35c6e2; --cyan-soft:#0f3140; --on-navy:#eaf3fb; --on-navy-muted:#9db4cc;
+  --good:#3fc795; --warn-bg:#3a3010; --warn-ink:#f0d27a; --bar-soft:#1f5f70; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;padding:24px 16px 56px}
+.doc{max-width:960px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.pad{padding-inline:clamp(16px,5vw,56px)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.num,.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.num{text-align:right;white-space:nowrap}
+.ph{background:var(--warn-bg);color:var(--warn-ink);padding:0 4px;border-radius:3px;font-style:normal}
+
+/* testata */
+.top{background:var(--navy);color:var(--on-navy);padding-block:28px 36px}
+.brand{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:16px}
+.brand b{font-family:var(--f-display);font-size:14px;letter-spacing:.12em;text-transform:uppercase}
+.brand small{color:var(--on-navy-muted);font-size:13px}
+.top h1{font-size:clamp(26px,5vw,40px);margin-top:28px;line-height:1.12}
+.top .sub{color:var(--on-navy-muted);margin-top:10px;max-width:66ch;font-size:17px}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:28px 0 0}
+.meta div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.meta dt,.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-navy-muted)}
+.meta dd{margin:0;font-weight:600}
+.top .ph{background:rgba(255,214,102,.18);color:#ffd666}
+
+/* blocco economico */
+.price{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+.calc{padding-block:28px;display:flex;flex-direction:column;gap:10px}
+.calc .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.calc .row span:first-child{color:var(--muted)}
+.calc .disc span{color:var(--good)!important}
+.calc .tot{border-top:2px solid var(--ink);padding-top:12px;margin-top:4px}
+.calc .tot span:first-child{color:var(--ink);font-weight:700}
+.calc .tot .num{font-size:28px;font-weight:600;color:var(--ink)}
+.calc small{color:var(--muted);font-size:13px}
+.facts{background:var(--cyan-soft);padding-block:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;align-content:center}
+.facts div{display:flex;flex-direction:column;gap:2px}
+.facts .lbl{color:var(--muted)}
+.facts b{font-family:var(--f-display);font-size:24px;font-weight:600}
+.facts b small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400;margin-left:4px}
+
+/* sezioni */
+section.s{padding-block:40px 8px}
+.s-h{display:flex;gap:14px;align-items:baseline;margin-bottom:18px}
+.s-h .n{font-family:var(--f-mono);color:var(--cyan);font-size:14px}
+.s-h h2{font-size:24px}
+.lead{color:var(--muted);max-width:72ch}
+.lead + .lead{margin-top:10px}
+h3.sub3{font-size:17px;margin:28px 0 12px}
+
+/* flusso architettura */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px}
+.step{border:1px solid var(--line);border-top:3px solid var(--cyan);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.step b{font-family:var(--f-display);font-size:14px}
+.step span{font-size:13.5px;color:var(--muted);line-height:1.4}
+
+/* tabelle */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.code{font-family:var(--f-mono);color:var(--cyan);font-weight:600;white-space:nowrap}
+td.dim{color:var(--muted);font-size:14px}
+tfoot td{font-weight:700;border-bottom:none}
+tfoot tr:first-child td{border-top:2px solid var(--ink)}
+tfoot .disc td{color:var(--good);font-weight:600}
+tfoot .grand td{background:var(--navy);color:var(--on-navy);font-size:17px}
+.princ td:first-child{font-family:var(--f-mono);color:var(--cyan);font-weight:600;white-space:nowrap}
+.princ td:nth-child(2){font-weight:600;min-width:150px}
+
+/* moduli */
+.mods{display:flex;flex-direction:column;gap:22px;margin-top:6px}
+.mod{border:1px solid var(--line);border-radius:4px;overflow:hidden;break-inside:avoid}
+.mod-h{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:14px 14px 12px;background:var(--bg)}
+.mod-code{font-family:var(--f-mono);font-weight:600;background:var(--navy);color:var(--on-navy);padding:3px 7px;border-radius:3px;font-size:13px}
+.mod-t h3{font-size:17px}
+.mod-t p{color:var(--muted);font-size:14.5px;margin-top:3px}
+.mod-tot{display:flex;flex-direction:column;align-items:flex-end;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mod-tot span{color:var(--muted);font-size:13px}
+.items th:first-child,.items td:first-child{padding-left:14px}
+.items th:last-child,.items td:last-child{padding-right:14px}
+.mod-f{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:12px 14px 14px;border-top:1px solid var(--line);font-size:14px}
+.mod-f div{min-width:0}
+.mod-f b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+
+/* forchetta */
+.range{border:1px solid var(--line);border-left:3px solid var(--cyan);border-radius:3px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start;margin-top:18px}
+.range div{display:flex;flex-direction:column;gap:3px}
+.range .lbl{color:var(--muted)}
+.range .v{font-family:var(--f-mono);font-weight:600}
+.range .v.hi{color:var(--cyan)}
+.range p{flex:1 1 260px;font-size:14px;color:var(--muted)}
+
+/* gantt */
+.gw{overflow-x:auto;margin-top:14px}
+.gantt{display:grid;grid-template-columns:minmax(170px,230px) minmax(0,1fr);gap:7px 14px;align-items:center;min-width:680px}
+.gl{display:flex;flex-direction:column;min-width:0}
+.gl b{font-size:14.5px}
+.gl span{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.gmonths,.gtrack{display:grid;grid-template-columns:repeat(13,minmax(0,1fr))}
+.gm{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-align:center;border-left:1px solid var(--line);padding-bottom:4px}
+.gtrack{height:22px;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100% / 13))}
+.gbar{background:var(--cyan);border-radius:3px;margin-block:4px}
+.gbar.soft{background:var(--bar-soft)}
+.gms{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--on-navy);background:var(--navy);border-radius:3px;margin-block:2px}
+
+/* liste */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cols > div{min-width:0}
+.cols h3{font-size:16px;margin-bottom:10px}
+ul.clean{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+ul.clean li{padding-left:16px;position:relative}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--cyan)}
+.note{font-size:13.5px;color:var(--muted);margin-top:12px}
+.box{border:1px dashed var(--warn-ink);background:var(--warn-bg);color:var(--warn-ink);border-radius:4px;padding:12px 14px;font-size:14px;margin-top:16px}
+
+.foot{margin-top:44px;border-top:1px solid var(--line);padding-block:20px 26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+.foot b{color:var(--ink);font-family:var(--f-display)}
+
+@media (max-width:760px){
+  .meta{grid-template-columns:1fr 1fr}
+  .price{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr 1fr}
+  .cols{grid-template-columns:1fr}
+  .mod-h{grid-template-columns:auto minmax(0,1fr)}
+  .mod-tot{grid-column:2;align-items:flex-start;flex-direction:row;gap:10px}
+  .mod-f{grid-template-columns:1fr}
+}
+@media (max-width:480px){ .flow{grid-template-columns:1fr} }
+@media print{
+  body{background:#fff;padding:0}
+  .doc{border:none;max-width:none}
+  .ph,.box{background:none}
+  section.s{break-inside:auto}
+}
+</style>
+<style>
+.gmonths,.gtrack{grid-template-columns:repeat(8,minmax(0,1fr))}
+.gtrack{background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100% / 8))}
+.gantt{min-width:600px}
+.flow{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:760px){ .flow{grid-template-columns:1fr 1fr} }
+@media (max-width:480px){ .flow{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<main class="doc">
+
+  <header class="top pad">
+    <div class="brand"><b><span class="ph">[Ragione sociale fornitore]</span></b><small>Preventivo OFF-CAI-2026-02</small></div>
+    <h1>Centralino AI con chat e prenotazioni, multi-cliente</h1>
+    <p class="sub">Sviluppo di una piattaforma da offrire in abbonamento a più aziende: un agente AI che risponde al telefono e in chat, prende appuntamenti e passa la conversazione a un operatore quando serve. Ogni minuto e ogni chat sono misurati, con quote gratuite e prezzi oltre quota impostabili cliente per cliente. È costruita come base modulare su cui aggiungere i moduli futuri.</p>
+    <dl class="meta">
+      <div><dt>Riferimento</dt><dd class="mono">OFF-CAI-2026-02</dd></div>
+      <div><dt>Data</dt><dd>4 ottobre 2026</dd></div>
+      <div><dt>Validità</dt><dd>90 giorni</dd></div>
+      <div><dt>Destinatario</dt><dd><span class="ph">[da definire]</span></dd></div>
+    </dl>
+  </header>
+
+  <div class="price">
+    <div class="calc pad">
+      <div class="row"><span>Sviluppo: 2.400 ore × € 25/h</span><span class="num">€ 60.000</span></div>
+      <div class="row disc"><span>Sconto commerciale (20%)</span><span class="num">−€ 12.000</span></div>
+      <div class="row tot"><span>Totale</span><span class="num">€ 48.000</span></div>
+      <small>Importi al netto di IVA. Costi dei fornitori (telefonia, AI, infrastruttura) esclusi, vedi § 07.</small>
+    </div>
+    <div class="facts pad">
+      <div><span class="lbl">Ore</span><b>2.400</b></div>
+      <div><span class="lbl">Moduli</span><b>16</b></div>
+      <div><span class="lbl">Durata</span><b>8<small>mesi</small></b></div>
+      <div><span class="lbl">Tariffa effettiva</span><b>€ 20<small>/h</small></b></div>
+    </div>
+  </div>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">01</span><h2>Oggetto della fornitura</h2></div>
+    <p class="lead">La piattaforma risponde alle chiamate e alle chat dei clienti finali di ogni azienda con un agente AI in linguaggio naturale, consulta la knowledge base dell'azienda, prenota, sposta e disdice appuntamenti e passa la conversazione a un operatore quando serve.</p>
+    <p class="lead">È pensata per essere venduta a molte aziende sulla stessa installazione. Ogni azienda ha la propria configurazione: numeri, agente, voce, orari, moduli attivi, e soprattutto le proprie quote gratuite e i propri prezzi oltre quota. Le prenotazioni sono il primo modulo; i successivi si aggiungono senza toccare il nucleo.</p>
+    <div class="flow">
+      <div class="step"><b>Canali</b><span>Telefono con numero per cliente, chat sul sito</span></div>
+      <div class="step"><b>Telefonia</b><span>Operatore voce dietro adattatore, instradamento, trasferimento</span></div>
+      <div class="step"><b>Motore voce</b><span>STT → LLM → TTS in streaming, interruzioni gestite</span></div>
+      <div class="step"><b>Agente e moduli</b><span>Knowledge base, prenotazioni, moduli futuri attivabili</span></div>
+      <div class="step"><b>Consumi</b><span>Minuti e chat misurati, quote gratuite, eccedenze, margine</span></div>
+    </div>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">02</span><h2>Quote gratuite e consumi</h2></div>
+    <p class="lead">Ogni chiamata e ogni chat generano un evento di utilizzo, registrato al secondo e associato al cliente. Le regole commerciali sono dati, non codice: si cambiano dal pannello di amministrazione senza rilasci.</p>
+    <div class="cols" style="margin-top:18px">
+      <div>
+        <h3>Che cosa si imposta per ogni cliente</h3>
+        <ul class="clean">
+          <li>Piano di partenza con canone, minuti e chat inclusi nel periodo (di norma il mese)</li>
+          <li>Personalizzazione del singolo cliente: quote e prezzi diversi dal piano</li>
+          <li>Prezzo oltre quota per minuto e per chat, anche a scaglioni</li>
+          <li>Regola di arrotondamento: al secondo, ai 30 secondi o al minuto</li>
+          <li>Che cosa definisce una chat: conversazione o numero di messaggi</li>
+          <li>Comportamento al superamento, separato per voce e chat: continua e addebita, avvisa, blocca</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Che cosa si vede</h3>
+        <ul class="clean">
+          <li>Consumo in tempo reale rispetto alla quota, per il cliente e per l'amministratore</li>
+          <li>Avvisi automatici all'80% e al 100% della quota</li>
+          <li>Rendiconto mensile: incluso, oltre quota, importo delle eccedenze</li>
+          <li>Costo dei fornitori per ogni chiamata e chat e margine per cliente</li>
+          <li>Esportazione CSV e API per la fatturazione, automatica con l'opzionale O6</li>
+          <li>Ogni nuovo modulo può dichiarare proprie unità misurabili, con le stesse regole</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub3">Esempio di configurazione</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Cliente</th><th class="num">Canone</th><th class="num">Minuti inclusi</th><th class="num">Chat incluse</th><th>Oltre quota</th><th>Al superamento</th></tr></thead>
+      <tbody>
+        <tr><td>Studio dentistico</td><td class="num">€ 49</td><td class="num">200</td><td class="num">300</td><td class="dim">€ 0,30/min · € 0,05/chat</td><td class="dim">Avvisa e continua</td></tr>
+        <tr><td>Ristorante</td><td class="num">€ 39</td><td class="num">400</td><td class="num">100</td><td class="dim">€ 0,25/min · € 0,05/chat</td><td class="dim">Telefono continua, chat bloccata</td></tr>
+        <tr><td>Officina</td><td class="num">€ 99</td><td class="num">1.000</td><td class="num">1.000</td><td class="dim">€ 0,20/min · € 0,03/chat</td><td class="dim">Continua e addebita</td></tr>
+      </tbody>
+    </table></div>
+    <h3 class="sub3">Esempio di rendiconto mensile — Studio dentistico</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Voce</th><th class="num">Usati</th><th class="num">Inclusi</th><th class="num">Oltre quota</th><th class="num">Importo</th></tr></thead>
+      <tbody>
+        <tr><td>Canone mensile</td><td></td><td></td><td></td><td class="num">€ 49,00</td></tr>
+        <tr><td>Minuti di chiamata</td><td class="num">263</td><td class="num">200</td><td class="num">63</td><td class="num">€ 18,90</td></tr>
+        <tr><td>Chat</td><td class="num">412</td><td class="num">300</td><td class="num">112</td><td class="num">€ 5,60</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="4">Ricavo del mese</td><td class="num">€ 73,50</td></tr>
+        <tr class="disc"><td colspan="4">Costo stimato dei fornitori (€ 0,06/min, € 0,004/chat)</td><td class="num">−€ 17,43</td></tr>
+        <tr class="grand"><td colspan="4">Margine</td><td class="num">€ 56,07</td></tr>
+      </tfoot>
+    </table></div>
+    <p class="note">Valori illustrativi, solo per mostrare il funzionamento: i prezzi reali li decide chi vende il servizio.</p>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">03</span><h2>Architettura e moduli futuri</h2></div>
+    <p class="lead">Un monolite modulare in TypeScript, eseguito su <b>Cloudflare Workers</b> con base dati <b>Supabase</b> (PostgreSQL in UE). Le sessioni di voce e chat vivono in Durable Objects; registrazioni e documenti su R2; riassunti, notifiche e conteggi in coda. Telefonia, STT, LLM e TTS stanno dietro adattatori: si cambia fornitore per cliente senza toccare il codice.</p>
+    <p class="lead">Nessun SDK di Cloudflare o Supabase entra nel nucleo. Lo stesso codice è già predisposto per girare in container su un server in affitto, con PostgreSQL standard e storage S3, quando i volumi lo rendono più conveniente; il trasloco è provato durante il progetto (M14). Con la crescita, la telefonia può passare a un centralino proprio (Asterisk) scrivendo un nuovo adattatore.</p>
+    <div class="cols" style="margin-top:18px">
+      <div>
+        <h3>Come si aggiunge un modulo</h3>
+        <ul class="clean">
+          <li>Un manifesto dichiara tabelle, permessi, schermate, eventi e unità misurabili</li>
+          <li>Il modulo espone azioni che l'agente può usare in voce e in chat</li>
+          <li>Si attiva per singolo cliente, con la propria configurazione</li>
+          <li>Il kit per moduli e un modulo di esempio sono inclusi (M02)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Tecnologie</h3>
+        <ul class="clean">
+          <li>TypeScript, Hono, Zod e OpenAPI; React per pannello, dashboard e widget</li>
+          <li>Supabase PostgreSQL con Row Level Security e pgvector</li>
+          <li>Cloudflare Workers, Durable Objects, Queues, R2, Hyperdrive</li>
+          <li>Operatore voce (Telnyx o Twilio), STT, LLM e TTS tramite adattatori</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">04</span><h2>Riepilogo economico</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th>Cod.</th><th>Modulo</th><th>Fase</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+      <tbody><tr><td class="code">M01</td><td>Analisi, architettura e setup</td><td class="dim">Fondamenta</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M02</td><td>Piattaforma multi-cliente e moduli</td><td class="dim">Fondamenta</td><td class="num">200</td><td class="num">€ 5.000</td></tr><tr><td class="code">M03</td><td>Telefonia</td><td class="dim">Voce</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M04</td><td>Motore voce in tempo reale</td><td class="dim">Voce</td><td class="num">260</td><td class="num">€ 6.500</td></tr><tr><td class="code">M05</td><td>Astrazione provider AI</td><td class="dim">Voce</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M06</td><td>Agente e knowledge base</td><td class="dim">Agente e chat</td><td class="num">200</td><td class="num">€ 5.000</td></tr><tr><td class="code">M07</td><td>Chat</td><td class="dim">Agente e chat</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M08</td><td>Prenotazioni</td><td class="dim">Prenotazioni</td><td class="num">220</td><td class="num">€ 5.500</td></tr><tr><td class="code">M09</td><td>Utilizzi, quote gratuite e consumi</td><td class="dim">Consumi</td><td class="num">220</td><td class="num">€ 5.500</td></tr><tr><td class="code">M10</td><td>Pannello di amministrazione</td><td class="dim">Pannelli</td><td class="num">120</td><td class="num">€ 3.000</td></tr><tr><td class="code">M11</td><td>Dashboard cliente</td><td class="dim">Pannelli</td><td class="num">160</td><td class="num">€ 4.000</td></tr><tr><td class="code">M12</td><td>Sicurezza, privacy e conformità</td><td class="dim">Scala</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">M13</td><td>API pubblica</td><td class="dim">Scala</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">M14</td><td>Osservabilità, affidabilità e portabilità</td><td class="dim">Scala</td><td class="num">90</td><td class="num">€ 2.250</td></tr><tr><td class="code">M15</td><td>Test e qualità</td><td class="dim">Rilascio</td><td class="num">160</td><td class="num">€ 4.000</td></tr><tr><td class="code">M16</td><td>Gestione progetto e rilascio</td><td class="dim">Rilascio</td><td class="num">130</td><td class="num">€ 3.250</td></tr></tbody>
+      <tfoot>
+        <tr><td></td><td colspan="2">Totale a listino</td><td class="num">2.400</td><td class="num">€ 60.000</td></tr>
+        <tr class="disc"><td></td><td colspan="3">Sconto commerciale (20%)</td><td class="num">−€ 12.000</td></tr>
+        <tr class="grand"><td></td><td colspan="3">Totale</td><td class="num">€ 48.000</td></tr>
+      </tfoot>
+    </table></div>
+    <div class="range">
+      <div><span class="lbl">Minimo</span><span class="v">2.150 h · € 43.000</span></div>
+      <div><span class="lbl">Stima</span><span class="v hi">2.400 h · € 48.000</span></div>
+      <div><span class="lbl">Massimo</span><span class="v">2.800 h · € 56.000</span></div>
+      <p>Importi scontati. La voce più variabile è il motore voce: la latenza percepita dipende da fornitori e linee reali, e ottenere una conversazione davvero naturale può richiedere più iterazioni. Seguono la sincronizzazione dei calendari e le regole di disponibilità dei primi clienti.</p>
+    </div>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">05</span><h2>Dettaglio dei moduli</h2></div>
+    <p class="lead">Ogni voce è stimata a € 25/h. Gli importi per modulo sono a listino, prima dello sconto commerciale.</p>
+    <div class="mods">
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M01</span>
+    <div class="mod-t"><h3>Analisi, architettura e setup</h3><p>Specifiche, architettura multi-cliente e modulare, ambienti e rilasci automatici.</p></div>
+    <div class="mod-tot"><b>100 h</b><span>€ 2.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Analisi dei requisiti e casi d&#x27;uso di voce, chat e prenotazioni</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Architettura multi-cliente e modulare, modello dati, decisioni documentate</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Ambienti di sviluppo, prova e produzione su Cloudflare e Supabase, pipeline CI/CD</td><td class="num">25</td><td class="num">€ 625</td></tr><tr><td>Prova tecnica della pipeline vocale e misura della latenza su linea reale</td><td class="num">15</td><td class="num">€ 375</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M02</span>
+    <div class="mod-t"><h3>Piattaforma multi-cliente e moduli</h3><p>La base su cui si innestano tutti i moduli futuri, attivabili cliente per cliente.</p></div>
+    <div class="mod-tot"><b>200 h</b><span>€ 5.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Aziende clienti, utenti, ruoli e permessi, secondo fattore</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Isolamento dei dati per cliente (Row Level Security) e chiavi API per cliente</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Sistema a moduli: registro, manifesto, attivazione e configurazione per cliente</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td>Eventi di dominio, outbox e webhook</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Registro delle operazioni</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Kit per nuovi moduli: struttura di partenza, guida e modulo di esempio</td><td class="num">15</td><td class="num">€ 375</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M03</span>
+    <div class="mod-t"><h3>Telefonia</h3><p>Numeri per cliente, instradamento e passaggio a un operatore, tramite operatore telefonico dietro adattatore.</p></div>
+    <div class="mod-tot"><b>150 h</b><span>€ 3.750</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Adattatore operatore voce (Telnyx o Twilio): numeri per cliente, chiamate in ingresso, flusso audio</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Instradamento: orari, festività, messaggi fuori orario, alternative</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Trasferimento a un operatore umano su numero o interno</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Registrazione delle chiamate con consenso, archiviazione cifrata</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Gestione di cadute di linea, silenzi prolungati e toni DTMF</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M04</span>
+    <div class="mod-t"><h3>Motore voce in tempo reale</h3><p>Il cuore del prodotto: conversazione naturale a bassa latenza, con interruzioni gestite.</p></div>
+    <div class="mod-tot"><b>260 h</b><span>€ 6.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Ponte audio in streaming tra telefonia e pipeline AI (Durable Objects)</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Orchestrazione della conversazione: turni di parola, interruzioni, silenzi</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td>Pipeline STT → LLM → TTS in streaming con risposte parziali</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td>Ottimizzazione della latenza e test su linee reali</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Riassunto ed esito della chiamata a fine conversazione</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M05</span>
+    <div class="mod-t"><h3>Astrazione provider AI</h3><p>Modelli e voci intercambiabili per cliente, senza modifiche al codice.</p></div>
+    <div class="mod-tot"><b>100 h</b><span>€ 2.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Interfaccia comune per riconoscimento vocale, modello linguistico e sintesi vocale</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Adattatori: due provider per ciascun servizio, selezione per cliente</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Passaggio automatico a un provider alternativo in caso di guasto</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M06</span>
+    <div class="mod-t"><h3>Agente e knowledge base</h3><p>Un unico agente per voce e chat, alimentato dai contenuti di ogni cliente e capace di usare i moduli.</p></div>
+    <div class="mod-tot"><b>200 h</b><span>€ 5.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Configurazione dell&#x27;agente per cliente: istruzioni, tono, voce, lingua, versioni</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Strumenti dell&#x27;agente: ogni modulo espone azioni che l&#x27;agente può eseguire</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Knowledge base: documenti, pagine web, FAQ con ricerca semantica (pgvector)</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td>Limiti di comportamento, passaggio a operatore, avviso di interazione con un&#x27;AI</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Riconoscimento del chiamante e memoria delle interazioni precedenti</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M07</span>
+    <div class="mod-t"><h3>Chat</h3><p>Lo stesso agente sul sito del cliente, con presa in carico da parte di un operatore.</p></div>
+    <div class="mod-tot"><b>150 h</b><span>€ 3.750</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Widget di chat installabile e personalizzabile</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td>Back-end della chat condiviso con l&#x27;agente vocale, risposte in streaming</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Inbox per gli operatori: presa in carico e risposta</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Notifiche e invio delle trascrizioni via e-mail</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M08</span>
+    <div class="mod-t"><h3>Prenotazioni</h3><p>Il primo modulo funzionale: prenotare, spostare e disdire per telefono e in chat.</p></div>
+    <div class="mod-tot"><b>220 h</b><span>€ 5.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Servizi, risorse e persone, sedi, durate, pause tra appuntamenti</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Motore delle disponibilità: orari, eccezioni, ferie, capienza, anticipo minimo</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Prenotazione, modifica e disdetta via voce e chat come strumenti dell&#x27;agente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Sincronizzazione con Google Calendar e Outlook</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Conferme e promemoria via SMS ed e-mail</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Calendario delle prenotazioni nella dashboard del cliente</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M09</span>
+    <div class="mod-t"><h3>Utilizzi, quote gratuite e consumi</h3><p>Ogni minuto e ogni chat misurati, con quota gratuita e prezzi oltre quota diversi per ogni cliente.</p></div>
+    <div class="mod-tot"><b>220 h</b><span>€ 5.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Misurazione per evento: secondi di chiamata, conversazioni e messaggi di chat, SMS, prenotazioni</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Piani con quote gratuite per periodo e personalizzazione per singolo cliente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Calcolo delle eccedenze con prezzi per cliente, scaglioni e regole di arrotondamento</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Comportamento al superamento (continua, avvisa, blocca) e avvisi all&#x27;80% e al 100%</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Costo dei fornitori per chiamata e chat con listini versionati, margine per cliente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Rendiconto mensile per cliente, esportazione CSV e API per la fatturazione</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M10</span>
+    <div class="mod-t"><h3>Pannello di amministrazione</h3><p>La console interna per gestire clienti, piani, quote, numeri e fornitori.</p></div>
+    <div class="mod-tot"><b>120 h</b><span>€ 3.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Gestione di clienti, piani, quote, moduli e numeri</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Monitoraggio delle chiamate in corso e dei consumi</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Configurazione dei fornitori e dei listini di costo</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Accesso di supporto all&#x27;account di un cliente, con registro</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M11</span>
+    <div class="mod-t"><h3>Dashboard cliente</h3><p>Il cliente configura il proprio agente e vede risultati e consumi.</p></div>
+    <div class="mod-tot"><b>160 h</b><span>€ 4.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Attivazione guidata del servizio</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Configurazione di agente, orari e knowledge base</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Storico di chiamate e chat: trascrizioni, registrazioni, riassunti</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Consumi rispetto alla quota e statistiche</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Notifiche e report periodici</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M12</span>
+    <div class="mod-t"><h3>Sicurezza, privacy e conformità</h3><p>GDPR e AI Act gestiti dalla piattaforma, non dal singolo cliente.</p></div>
+    <div class="mod-tot"><b>80 h</b><span>€ 2.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>GDPR: consenso alla registrazione, conservazione configurabile, richieste degli interessati</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>AI Act: avviso di interazione con un&#x27;AI e registri</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Cifratura, gestione dei segreti, limitazione delle richieste</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Documentazione a supporto del registro dei trattamenti</td><td class="num">15</td><td class="num">€ 375</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M13</span>
+    <div class="mod-t"><h3>API pubblica</h3><p>Integrazioni di terzi e moduli esterni.</p></div>
+    <div class="mod-tot"><b>60 h</b><span>€ 1.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>API REST e webhook sugli eventi</td><td class="num">35</td><td class="num">€ 875</td></tr><tr><td>Documentazione OpenAPI</td><td class="num">25</td><td class="num">€ 625</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M14</span>
+    <div class="mod-t"><h3>Osservabilità, affidabilità e portabilità</h3><p>Ogni chiamata tracciata, backup provati, pronto a spostarsi su un server.</p></div>
+    <div class="mod-tot"><b>90 h</b><span>€ 2.250</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Log, metriche e tracciamento per singola chiamata</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Avvisi e pagina di stato</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Backup e ripristino provato</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Versione per server: immagine Docker, file Compose, prova di trasloco</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M15</span>
+    <div class="mod-t"><h3>Test e qualità</h3><p>Test automatici su codice, conversazioni e carico.</p></div>
+    <div class="mod-tot"><b>160 h</b><span>€ 4.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Test automatici unitari, di integrazione ed end-to-end</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td>Test conversazionali: chiamate simulate, regressione delle istruzioni</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Test di carico su chiamate contemporanee</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Pilota con clienti reali</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M16</span>
+    <div class="mod-t"><h3>Gestione progetto e rilascio</h3><p>Coordinamento, documentazione e messa in produzione.</p></div>
+    <div class="mod-tot"><b>130 h</b><span>€ 3.250</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Gestione del progetto e allineamenti periodici</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td>Documentazione tecnica e manuale utente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Formazione e messa in produzione</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+    </div>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">06</span><h2>Cronoprogramma</h2></div>
+    <p class="lead">Durata stimata di 8 mesi con due sviluppatori. Il motore voce parte subito dopo le fondamenta perché è la parte più incerta; consumi e prenotazioni partono quando l'agente è stabile.</p>
+    <div class="gw"><div class="gantt">
+      <div></div><div class="gmonths"><div class="gm">M1</div><div class="gm">M2</div><div class="gm">M3</div><div class="gm">M4</div><div class="gm">M5</div><div class="gm">M6</div><div class="gm">M7</div><div class="gm">M8</div></div>
+      <div class="gl"><b>Fondamenta</b><span>M01 · M02 · 300 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:1 / 3"></div></div><div class="gl"><b>Voce</b><span>M03 · M04 · M05 · 510 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:2 / 6"></div></div><div class="gl"><b>Agente e chat</b><span>M06 · M07 · 350 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:3 / 7"></div></div><div class="gl"><b>Prenotazioni</b><span>M08 · 220 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:4 / 7"></div></div><div class="gl"><b>Consumi</b><span>M09 · 220 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:4 / 8"></div></div><div class="gl"><b>Pannelli</b><span>M10 · M11 · 280 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:5 / 9"></div></div><div class="gl"><b>Scala</b><span>M12 · M13 · M14 · 230 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:6 / 9"></div></div><div class="gl"><b>Rilascio</b><span>M15 · M16 · 290 h</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:1 / 9"></div></div>
+    </div></div>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">07</span><h2>Costi ricorrenti non inclusi</h2></div>
+    <p class="lead">Costi a consumo dei fornitori, intestati a chi vende il servizio ed esclusi dal prezzo di sviluppo. La piattaforma li misura per ogni chiamata e chat, così il margine di ogni cliente è sempre visibile.</p>
+    <div class="tw" style="margin-top:16px"><table>
+      <thead><tr><th>Voce</th><th>Modalità</th><th class="num">Stima indicativa</th></tr></thead>
+      <tbody>
+        <tr><td>Pipeline AI (STT, LLM, TTS) e traffico telefonico</td><td class="dim">A consumo, per minuto di conversazione</td><td class="num">€ 0,04–0,10/min</td></tr>
+        <tr><td>Chat (modello linguistico)</td><td class="dim">A consumo, per conversazione</td><td class="num">€ 0,002–0,01/chat</td></tr>
+        <tr><td>Numeri telefonici</td><td class="dim">Canone per numero</td><td class="num">€ 1–5/mese</td></tr>
+        <tr><td>Infrastruttura Cloudflare e Supabase</td><td class="dim">Mensile, cresce con i clienti: da avvio a circa 100 aziende</td><td class="num">€ 35–300/mese</td></tr>
+        <tr><td>SMS ed e-mail</td><td class="dim">A consumo</td><td class="num">secondo listino</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Le stime dipendono dai fornitori scelti e dai volumi; vanno riverificate sui listini in vigore al momento dell'avvio.</p>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">08</span><h2>Moduli futuri opzionali</h2></div>
+    <p class="lead">Quotati a parte a listino, sviluppati sulla piattaforma come moduli aggiuntivi senza modifiche al nucleo.</p>
+    <div class="tw" style="margin-top:16px"><table>
+      <thead><tr><th>Cod.</th><th>Modulo</th><th>Contenuto</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+      <tbody><tr><td class="code">O1</td><td>WhatsApp Business</td><td class="dim">Lo stesso agente su WhatsApp, con misurazione e quote dedicate</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O2</td><td>Chiamate in uscita</td><td class="dim">Richiami, promemoria vocali, conferme di appuntamento</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O3</td><td>Integrazione CRM</td><td class="dim">HubSpot e Pipedrive: scheda contatto, creazione lead e attività</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td class="code">O4</td><td>Raccolta e qualificazione lead</td><td class="dim">Domande guidate, punteggio, invio al commerciale</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td class="code">O5</td><td>Ordini per la ristorazione</td><td class="dim">Menu, ordini da asporto e consegna via voce e chat</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O6</td><td>Fatturazione automatica dei consumi</td><td class="dim">Stripe: canoni, eccedenze addebitate, area fatture del cliente</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">O7</td><td>Multilingua</td><td class="dim">Agente con riconoscimento della lingua, interfacce in quattro lingue</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">O8</td><td>Rivenditori e white label</td><td class="dim">Rivenditori con propri clienti, marchio e dominio personalizzati</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td class="code">O9</td><td>Sondaggi di soddisfazione</td><td class="dim">Domande a fine chiamata o chat, statistiche</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody>
+      <tfoot><tr><td></td><td colspan="2">Totale opzionali a listino</td><td class="num">550</td><td class="num">€ 13.750</td></tr></tfoot>
+    </table></div>
+  </section>
+
+  <section class="s pad">
+    <div class="s-h"><span class="n">09</span><h2>Perimetro e condizioni</h2></div>
+    <div class="cols">
+      <div>
+        <h3>Non incluso</h3>
+        <ul class="clean">
+          <li>Costi ricorrenti dei fornitori elencati al § 07</li>
+          <li>Moduli opzionali del § 08 e integrazioni con gestionali di singoli clienti</li>
+          <li>Hosting e gestione operativa: l'infrastruttura è intestata al committente, che la gestisce</li>
+          <li>App mobile nativa</li>
+          <li>Consulenza legale e testi di informativa per i clienti finali</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Condizioni</h3>
+        <ul class="clean">
+          <li>Prezzo a corpo di € 48.000 per il perimetro descritto</li>
+          <li>Modifiche di perimetro quotate a € 25/h, previa approvazione</li>
+          <li>Correzione dei difetti inclusa per 60 giorni dalla messa in produzione</li>
+          <li>Manutenzione correttiva e adeguativa: 10% annuo, € 4.800/anno</li>
+          <li>Codice, account e numeri intestati al committente dal primo giorno</li>
+          <li>Offerta valida 90 giorni dalla data del documento</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot pad">
+    <span><b><span class="ph">[Ragione sociale fornitore]</span></b> · <span class="ph">[P.IVA]</span> · <span class="ph">[contatti]</span></span>
+    <span class="mono">OFF-CAI-2026-02 · 04/10/2026</span>
+  </footer>
+</main>
+</body>
+</html>
