@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Offerta Gestionale Modulare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Documento commerciale a colonna singola: sintesi economica in testa, poi architettura, stime per WP, opzionali, piano, prezzi, rischi */
+:root{
+  --bg:#f5f7fa; --paper:#ffffff; --ink:#0d1b2e; --muted:#56657a; --line:#dde3ec;
+  --navy:#0f2a4a; --cyan:#0aa3c2; --cyan-soft:#e3f6fa; --on-navy:#eaf3fb; --on-navy-muted:#a9bfd6;
+  --good:#12805c; --warn-bg:#fff6dc; --warn-ink:#7a5a00; --bar-soft:#9fdbe8;
+  --f-display:"Sora","Segoe UI",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0a1320; --paper:#0f1c2d; --ink:#e4ecf5; --muted:#93a4ba; --line:#22344b;
+  --navy:#0c2440; --cyan:#35c6e2; --cyan-soft:#0f3140; --on-navy:#eaf3fb; --on-navy-muted:#9db4cc;
+  --good:#3fc795; --warn-bg:#3a3010; --warn-ink:#f0d27a; --bar-soft:#1f5f70; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0a1320; --paper:#0f1c2d; --ink:#e4ecf5; --muted:#93a4ba; --line:#22344b;
+  --navy:#0c2440; --cyan:#35c6e2; --cyan-soft:#0f3140; --on-navy:#eaf3fb; --on-navy-muted:#9db4cc;
+  --good:#3fc795; --warn-bg:#3a3010; --warn-ink:#f0d27a; --bar-soft:#1f5f70; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;padding:24px 16px 56px}
+.doc{max-width:960px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.pad{padding-inline:clamp(16px,5vw,56px)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.num,.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.num{text-align:right;white-space:nowrap}
+.ph{background:var(--warn-bg);color:var(--warn-ink);padding:0 4px;border-radius:3px;font-style:normal}
+
+/* testata */
+.top{background:var(--navy);color:var(--on-navy);padding-block:28px 36px}
+.brand{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:16px}
+.brand b{font-family:var(--f-display);font-size:14px;letter-spacing:.12em;text-transform:uppercase}
+.brand small{color:var(--on-navy-muted);font-size:13px}
+.top h1{font-size:clamp(26px,5vw,40px);margin-top:28px;line-height:1.12}
+.top .sub{color:var(--on-navy-muted);margin-top:10px;max-width:66ch;font-size:17px}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:28px 0 0}
+.meta div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.meta dt,.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-navy-muted)}
+.meta dd{margin:0;font-weight:600}
+.top .ph{background:rgba(255,214,102,.18);color:#ffd666}
+
+/* blocco economico */
+.price{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+.calc{padding-block:28px;display:flex;flex-direction:column;gap:10px}
+.calc .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.calc .row span:first-child{color:var(--muted)}
+.calc .disc span{color:var(--good)!important}
+.calc .tot{border-top:2px solid var(--ink);padding-top:12px;margin-top:4px}
+.calc .tot span:first-child{color:var(--ink);font-weight:700}
+.calc .tot .num{font-size:28px;font-weight:600;color:var(--ink)}
+.calc small{color:var(--muted);font-size:13px}
+.facts{background:var(--cyan-soft);padding-block:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;align-content:center}
+.facts div{display:flex;flex-direction:column;gap:2px}
+.facts .lbl{color:var(--muted)}
+.facts b{font-family:var(--f-display);font-size:24px;font-weight:600}
+.facts b small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400;margin-left:4px}
+
+/* sezioni */
+section.s{padding-block:40px 8px}
+.s-h{display:flex;gap:14px;align-items:baseline;margin-bottom:18px}
+.s-h .n{font-family:var(--f-mono);color:var(--cyan);font-size:14px}
+.s-h h2{font-size:24px}
+.lead{color:var(--muted);max-width:72ch}
+.lead + .lead{margin-top:10px}
+h3.sub3{font-size:17px;margin:28px 0 12px}
+
+/* flusso architettura */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px}
+.step{border:1px solid var(--line);border-top:3px solid var(--cyan);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.step b{font-family:var(--f-display);font-size:14px}
+.step span{font-size:13.5px;color:var(--muted);line-height:1.4}
+
+/* tabelle */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.code{font-family:var(--f-mono);color:var(--cyan);font-weight:600;white-space:nowrap}
+td.dim{color:var(--muted);font-size:14px}
+tfoot td{font-weight:700;border-bottom:none}
+tfoot tr:first-child td{border-top:2px solid var(--ink)}
+tfoot .disc td{color:var(--good);font-weight:600}
+tfoot .grand td{background:var(--navy);color:var(--on-navy);font-size:17px}
+.princ td:first-child{font-family:var(--f-mono);color:var(--cyan);font-weight:600;white-space:nowrap}
+.princ td:nth-child(2){font-weight:600;min-width:150px}
+
+/* moduli */
+.mods{display:flex;flex-direction:column;gap:22px;margin-top:6px}
+.mod{border:1px solid var(--line);border-radius:4px;overflow:hidden;break-inside:avoid}
+.mod-h{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:14px 14px 12px;background:var(--bg)}
+.mod-code{font-family:var(--f-mono);font-weight:600;background:var(--navy);color:var(--on-navy);padding:3px 7px;border-radius:3px;font-size:13px}
+.mod-t h3{font-size:17px}
+.mod-t p{color:var(--muted);font-size:14.5px;margin-top:3px}
+.mod-tot{display:flex;flex-direction:column;align-items:flex-end;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mod-tot span{color:var(--muted);font-size:13px}
+.items th:first-child,.items td:first-child{padding-left:14px}
+.items th:last-child,.items td:last-child{padding-right:14px}
+.mod-f{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:12px 14px 14px;border-top:1px solid var(--line);font-size:14px}
+.mod-f div{min-width:0}
+.mod-f b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+
+/* forchetta */
+.range{border:1px solid var(--line);border-left:3px solid var(--cyan);border-radius:3px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start;margin-top:18px}
+.range div{display:flex;flex-direction:column;gap:3px}
+.range .lbl{color:var(--muted)}
+.range .v{font-family:var(--f-mono);font-weight:600}
+.range .v.hi{color:var(--cyan)}
+.range p{flex:1 1 260px;font-size:14px;color:var(--muted)}
+
+/* gantt */
+.gw{overflow-x:auto;margin-top:14px}
+.gantt{display:grid;grid-template-columns:minmax(170px,230px) minmax(0,1fr);gap:7px 14px;align-items:center;min-width:680px}
+.gl{display:flex;flex-direction:column;min-width:0}
+.gl b{font-size:14.5px}
+.gl span{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.gmonths,.gtrack{display:grid;grid-template-columns:repeat(13,minmax(0,1fr))}
+.gm{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-align:center;border-left:1px solid var(--line);padding-bottom:4px}
+.gtrack{height:22px;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100% / 13))}
+.gbar{background:var(--cyan);border-radius:3px;margin-block:4px}
+.gbar.soft{background:var(--bar-soft)}
+.gms{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--on-navy);background:var(--navy);border-radius:3px;margin-block:2px}
+
+/* liste */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cols > div{min-width:0}
+.cols h3{font-size:16px;margin-bottom:10px}
+ul.clean{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+ul.clean li{padding-left:16px;position:relative}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--cyan)}
+.note{font-size:13.5px;color:var(--muted);margin-top:12px}
+.box{border:1px dashed var(--warn-ink);background:var(--warn-bg);color:var(--warn-ink);border-radius:4px;padding:12px 14px;font-size:14px;margin-top:16px}
+
+.foot{margin-top:44px;border-top:1px solid var(--line);padding-block:20px 26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+.foot b{color:var(--ink);font-family:var(--f-display)}
+
+@media (max-width:760px){
+  .meta{grid-template-columns:1fr 1fr}
+  .price{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr 1fr}
+  .cols{grid-template-columns:1fr}
+  .mod-h{grid-template-columns:auto minmax(0,1fr)}
+  .mod-tot{grid-column:2;align-items:flex-start;flex-direction:row;gap:10px}
+  .mod-f{grid-template-columns:1fr}
+}
+@media (max-width:480px){ .flow{grid-template-columns:1fr} }
+@media print{
+  body{background:#fff;padding:0}
+  .doc{border:none;max-width:none}
+  .ph,.box{background:none}
+  section.s{break-inside:auto}
+}
+</style>
+</head>
+<body>
+<main class="doc">
+
+  <header class="top pad">
+    <div class="brand"><b><span class="ph">[Ragione sociale fornitore]</span></b><small>Offerta OFF-GEST-2026-01 · in risposta a RDO-GEST-2026-01</small></div>
+    <h1>Piattaforma gestionale modulare — Versione 1</h1>
+    <p class="sub">Offerta per progettazione, sviluppo e avviamento della prima versione del gestionale multi-cliente di Noesis System: ciclo operativo e amministrativo di un'impresa commerciale, costruito su fondamenta pensate per assorbire nuovi clienti con configurazione e moduli, non con riscritture.</p>
+    <dl class="meta">
+      <div><dt>Committente</dt><dd>Noesis System</dd></div>
+      <div><dt>Data</dt><dd>4 ottobre 2026</dd></div>
+      <div><dt>Validità</dt><dd>90 giorni</dd></div>
+      <div><dt>Tariffa</dt><dd>€ 25/h · € 200/gg</dd></div>
+    </dl>
+  </header>
+
+  <div class="price">
+    <div class="calc pad">
+      <div class="row"><span>Versione 1 (WP0–WP12): 471 gg × € 200</span><span class="num">€ 94.200</span></div>
+      <div class="row disc"><span>Sconto commerciale (20%)</span><span class="num">−€ 18.840</span></div>
+      <div class="row tot"><span>Totale Versione 1</span><span class="num">€ 75.360</span></div>
+      <small>Importi al netto di IVA. Una giornata-persona = 8 ore. Opzionali e canoni a parte (§ 08–09).</small>
+    </div>
+    <div class="facts pad">
+      <div><span class="lbl">Giornate-persona</span><b>471</b></div>
+      <div><span class="lbl">Ore</span><b>3.768</b></div>
+      <div><span class="lbl">Rilascio pilota</span><b>10<small>mesi</small></b></div>
+      <div><span class="lbl">Tariffa effettiva</span><b>€ 160<small>/gg</small></b></div>
+    </div>
+  </div>
+
+  <!-- 01 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">01</span><h2>Sintesi della proposta</h2></div>
+    <p class="lead">Proponiamo un <b>monolite modulare in TypeScript su PostgreSQL</b>, con isolamento dei clienti garantito dalla Row Level Security della base dati, moduli con schema proprio e confini verificati in integrazione continua, API REST come unica porta d'accesso (l'interfaccia web ne è un client) ed eventi di dominio persistiti nella stessa transazione della scrittura.</p>
+    <p class="lead">La stima è di <b>471 giornate-persona</b> per WP0–WP12, con una forchetta di 430–560 giornate che si chiude alla fine della fase di analisi. Il piano porta il pilota in produzione il <b>6 settembre 2027</b>, con consegne incrementali in ambiente di prova a ogni milestone ed esercizio assistito fino al 5 novembre 2027.</p>
+    <p class="lead">Il modulo di riferimento O4 (provvigioni agenti) è stimato in <b>12 giornate</b>: è la nostra misura del costo di un modulo tipico una volta che la piattaforma esiste.</p>
+    <div class="flow">
+      <div class="step"><b>Interfaccia web</b><span>React, design system proprio, client della stessa API pubblica</span></div>
+      <div class="step"><b>API e permessi</b><span>REST + OpenAPI 3, chiavi per cliente con ambiti, idempotenza</span></div>
+      <div class="step"><b>Nucleo e moduli</b><span>Moduli con schema, interfacce ed eventi propri; nessun accesso incrociato</span></div>
+      <div class="step"><b>Dati ed eventi</b><span>PostgreSQL con RLS, registro operazioni, outbox, webhook, S3</span></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">02</span><h2>Architettura e stack</h2></div>
+    <p class="lead">Un solo linguaggio dal back-end al front-end, componenti open source diffusi con licenza permissiva (MIT, Apache 2.0, BSD, PostgreSQL). Nessuna dipendenza AGPL o GPL nel prodotto; l'inventario delle licenze è generato in integrazione continua e blocca il rilascio se compare una licenza non approvata.</p>
+    <div class="tw" style="margin-top:16px"><table>
+      <thead><tr><th>Livello</th><th>Scelta</th><th>Motivazione</th></tr></thead>
+      <tbody>
+        <tr><td>Back-end</td><td>Node.js LTS, TypeScript, NestJS</td><td class="dim">Moduli e iniezione delle dipendenze nativi, ampia base di sviluppatori in Italia: un altro team lo prende in mano senza competenze rare</td></tr>
+        <tr><td>Base dati</td><td>PostgreSQL 16+, Kysely, migrazioni versionate</td><td class="dim">Query tipizzate senza la magia di un ORM pesante; RLS, JSONB, ricerca testuale e trigrammi nativi</td></tr>
+        <tr><td>Schemi e API</td><td>Zod → OpenAPI 3, Scalar per la documentazione</td><td class="dim">Un'unica definizione genera validazione, documentazione, client tipizzato e descrizione delle operazioni per gli assistenti</td></tr>
+        <tr><td>Lavori asincroni</td><td>pg-boss su PostgreSQL</td><td class="dim">Code, webhook, invii SdI e PDF senza aggiungere Redis o broker: un servizio in meno da installare presso il cliente</td></tr>
+        <tr><td>Front-end</td><td>React, Vite, TanStack Query e Table, Radix UI</td><td class="dim">Tabelle dense e navigabili da tastiera, componenti accessibili di base su cui costruire il design system</td></tr>
+        <tr><td>Documenti</td><td>Modelli HTML + Gotenberg (Chromium) per i PDF</td><td class="dim">Modelli per cliente modificabili senza strumenti proprietari; motore dietro adattatore</td></tr>
+        <tr><td>File</td><td>API S3 (object storage UE in cloud; SeaweedFS in installazione locale)</td><td class="dim">SeaweedFS è Apache 2.0, a differenza di MinIO (AGPL)</td></tr>
+        <tr><td>Esercizio</td><td>Docker, un file Compose, Caddy, OpenTelemetry, Prometheus, GlitchTip</td><td class="dim">Si avvia su qualunque server Linux; nessun servizio esclusivo di un cloud nel nucleo</td></tr>
+        <tr><td>Qualità</td><td>Vitest, Testcontainers, Playwright, dependency-cruiser, GitHub Actions</td><td class="dim">Test su PostgreSQL vero; i confini fra moduli sono regole che fanno fallire la build</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="sub3">Risposta ai principi del § 3</h3>
+    <div class="tw"><table class="princ">
+      <thead><tr><th>Cod.</th><th>Principio</th><th>Come lo soddisfiamo</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>Multi-cliente</td><td>Ogni tabella con dati di cliente porta <span class="mono">tenant_id</span> e una politica RLS; l'applicazione si connette con un ruolo senza privilegi di bypass e imposta il cliente a ogni transazione. Un test automatico verifica che nessuna tabella resti senza politica. La modalità mono-cliente è la stessa immagine con un solo tenant. Moduli, parametri, aspetto e lessico sono configurazione per cliente.</td></tr>
+        <tr><td>P2</td><td>Monolite modulare</td><td>Un modulo = una cartella con il proprio schema PostgreSQL, un'interfaccia pubblica (comandi, interrogazioni), eventi emessi e un manifesto con dipendenze e permessi. Le regole di dependency-cruiser e i permessi sugli schemi impediscono letture incrociate e cicli; la build fallisce se un confine viene violato. Disattivare un modulo per un cliente nasconde rotte, menu ed eventi senza toccare gli altri.</td></tr>
+        <tr><td>P3</td><td>Estensibilità come dato</td><td>Definizioni di campi aggiuntivi (tipo, obbligatorietà, elenco, visibilità) salvate per cliente e applicate a modello, API, moduli di inserimento, filtri ed esportazioni; valori in JSONB indicizzato. Stati con transizioni configurabili, tipi di documento, numeratori, etichette. Regole semplici espresse in JSON Logic (linguaggio dichiarativo, non eseguibile arbitrariamente). Ogni modifica è versionata con ritorno alla versione precedente.</td></tr>
+        <tr><td>P4</td><td>API prima della UI</td><td>Il front-end usa solo l'API pubblica. Schemi in Zod da cui derivano validazione, OpenAPI 3 e descrizione delle operazioni. Eventi di dominio scritti in una tabella outbox nella stessa transazione e consegnati via webhook firmati con riconsegna.</td></tr>
+        <tr><td>P5</td><td>Tracciabilità</td><td>Registro operazioni con attore (utente, integrazione, sistema), istante, comando, stato prima e dopo, nella stessa transazione. Intestazione <span class="mono">Idempotency-Key</span> obbligatoria sulle scritture via API; concorrenza ottimistica con numero di versione (409 in caso di conflitto). Numeratori fiscali con riga di contatore bloccata nella transazione di emissione: nessun salto, nessun duplicato.</td></tr>
+        <tr><td>P6</td><td>Installabile ovunque</td><td>Immagini container, un file Compose per l'intera piattaforma, PostgreSQL e storage S3. Backup con pgBackRest (WAL continuo per RPO 1 h) e prova di ripristino automatica mensile con esito registrato.</td></tr>
+        <tr><td>P7</td><td>Adattatori</td><td>Interfacce interne per SdI e conservazione, posta, PDF, firma, pagamenti, storage. Ogni adattatore ha un'implementazione di prova usata nei test; cambiare fornitore significa scrivere un adattatore e cambiare configurazione.</td></tr>
+        <tr><td>P8</td><td>Esperienza d'uso</td><td>Una UX/UI designer dedicata cura prototipo (WP0), design system e prove con utenti (WP10). I cinque compiti chiave sono provati con tre utenti del pilota sul prototipo e di nuovo prima del rilascio, con tempi obiettivo fissati in WP0.</td></tr>
+        <tr><td>P9</td><td>Qualità verificabile</td><td>Scenari di accettazione scritti in WP0 per ogni pacchetto e trasformati in test di flusso Playwright; test di integrazione su PostgreSQL reale; tre ambienti separati; dati di esempio generati da script.</td></tr>
+        <tr><td>P10</td><td>Nessun vincolo di uscita</td><td>Repository, CI, registro container, domini e account dei fornitori intestati al Committente dal primo giorno; noi operiamo come utenti invitati. Decisioni di architettura in ADR, guida di esercizio e d'uso, inventario licenze, due settimane di affiancamento.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="sub3">Team</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Ruolo</th><th>Persona</th><th>Impegno</th></tr></thead>
+      <tbody>
+        <tr><td>Responsabile tecnico, architettura e back-end, revisione del codice</td><td><span class="ph">[nome]</span></td><td class="dim">Tempo pieno</td></tr>
+        <tr><td>Sviluppo full-stack, front-end e moduli funzionali</td><td><span class="ph">[nome]</span></td><td class="dim">Tempo pieno</td></tr>
+        <tr><td>Progettazione dell'interfaccia, prototipazione, prove con utenti</td><td><span class="ph">[nome]</span></td><td class="dim">Circa 40%, concentrato in WP0 e WP10</td></tr>
+      </tbody>
+    </table></div>
+    <div class="box"><b>Da completare prima dell'invio:</b> esperienza effettiva del team con TypeScript, Node.js, React e PostgreSQL (anni, progetti in produzione, referenze), richiesta esplicitamente dal § 5 della RDO.</div>
+    <p class="note">Uso di assistenti di codice: ammesso dalla RDO e previsto. Ogni modifica passa da revisione umana e test; le decisioni di progettazione sono prese e firmate da persone negli ADR; ogni pull request indica se e come è stato usato un assistente. Le licenze delle dipendenze sono controllate in CI.</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">03</span><h2>Riepilogo delle stime</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th>WP</th><th>Pacchetto</th><th>Milestone</th><th class="num">Giornate</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+      <tbody>
+        <tr><td class="code">WP0</td><td>Analisi, architettura e prototipo</td><td class="dim">M0</td><td class="num">32</td><td class="num">256</td><td class="num">€ 6.400</td></tr>
+        <tr><td class="code">WP1</td><td>Piattaforma</td><td class="dim">M1</td><td class="num">105</td><td class="num">840</td><td class="num">€ 21.000</td></tr>
+        <tr><td class="code">WP2</td><td>Anagrafiche</td><td class="dim">M1</td><td class="num">18</td><td class="num">144</td><td class="num">€ 3.600</td></tr>
+        <tr><td class="code">WP3</td><td>Articoli, listini e condizioni commerciali</td><td class="dim">M1</td><td class="num">30</td><td class="num">240</td><td class="num">€ 6.000</td></tr>
+        <tr><td class="code">WP4</td><td>Magazzino e lotti</td><td class="dim">M2</td><td class="num">32</td><td class="num">256</td><td class="num">€ 6.400</td></tr>
+        <tr><td class="code">WP5</td><td>Vendite</td><td class="dim">M2</td><td class="num">46</td><td class="num">368</td><td class="num">€ 9.200</td></tr>
+        <tr><td class="code">WP6</td><td>Acquisti</td><td class="dim">M3</td><td class="num">22</td><td class="num">176</td><td class="num">€ 4.400</td></tr>
+        <tr><td class="code">WP7</td><td>Fatturazione elettronica, scadenzario, incassi e pagamenti</td><td class="dim">M3</td><td class="num">38</td><td class="num">304</td><td class="num">€ 7.600</td></tr>
+        <tr><td class="code">WP8</td><td>Reportistica e cruscotti</td><td class="dim">M4</td><td class="num">20</td><td class="num">160</td><td class="num">€ 4.000</td></tr>
+        <tr><td class="code">WP9</td><td>API, eventi e integrazioni</td><td class="dim">M4</td><td class="num">16</td><td class="num">128</td><td class="num">€ 3.200</td></tr>
+        <tr><td class="code">WP10</td><td>Esperienza d'uso e design system</td><td class="dim">M0–M4</td><td class="num">38</td><td class="num">304</td><td class="num">€ 7.600</td></tr>
+        <tr><td class="code">WP11</td><td>Qualità, sicurezza, documentazione, operatività</td><td class="dim">M1–M5</td><td class="num">42</td><td class="num">336</td><td class="num">€ 8.400</td></tr>
+        <tr><td class="code">WP12</td><td>Migrazione dei dati e avviamento del pilota</td><td class="dim">M1–M5</td><td class="num">32</td><td class="num">256</td><td class="num">€ 6.400</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td></td><td colspan="2">Totale a listino</td><td class="num">471</td><td class="num">3.768</td><td class="num">€ 94.200</td></tr>
+        <tr class="disc"><td></td><td colspan="4">Sconto commerciale (20%)</td><td class="num">−€ 18.840</td></tr>
+        <tr class="grand"><td></td><td colspan="4">Totale Versione 1</td><td class="num">€ 75.360</td></tr>
+      </tfoot>
+    </table></div>
+    <p class="note">Coordinamento, allineamenti con il Committente e revisione del codice sono inclusi nelle stime di ciascun pacchetto (circa l'8%). I test unitari e di integrazione di ogni funzione sono stimati nel pacchetto che la realizza; WP11 contiene l'infrastruttura di qualità, i test trasversali e la sicurezza.</p>
+
+    <div class="range">
+      <div><span class="lbl">Minimo</span><span class="v">430 gg · € 68.800</span></div>
+      <div><span class="lbl">Stima</span><span class="v hi">471 gg · € 75.360</span></div>
+      <div><span class="lbl">Massimo</span><span class="v">560 gg · € 89.600</span></div>
+      <p>Importi scontati. Le voci più incerte sono le regole configurabili (WP1), il motore prezzi del pilota (WP3), l'intermediario SdI (WP7) e la qualità dei dati da migrare (WP12). Alla fine di WP0 la forchetta si chiude su un prezzo a corpo per WP1–WP12.</p>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">04</span><h2>Dettaglio dei pacchetti di lavoro</h2></div>
+    <p class="lead">Importi a listino (€ 200 per giornata), prima dello sconto commerciale. Per ogni pacchetto: attività, assunzioni che reggono la stima e rischi che potrebbero farla crescere.</p>
+    <div class="mods">
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP0</span>
+    <div class="mod-t"><h3>Analisi, architettura e prototipo</h3><p>Quattro settimane: requisiti, modello dei dati, decisioni documentate, prototipo e backlog stimato.</p></div>
+    <div class="mod-tot"><b>32 gg</b><span>€ 6.400</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Incontri sui requisiti con Committente e pilota, scenari di accettazione per pacchetto</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Modello dei dati, mappa dei moduli, confini e dipendenze</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Decisioni di architettura (ADR), prove tecniche su RLS, numeratori e campi aggiuntivi, scelta dell'intermediario SdI</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Prototipo navigabile delle cinque schermate chiave e prima prova con utenti</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Backlog dettagliato, stime riviste, piano delle milestone</td><td class="num">4</td><td class="num">€ 800</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Referente del Committente disponibile due mezze giornate a settimana; accesso al pilota tramite il Committente entro la seconda settimana.</div><div><b>Rischi</b>Decisioni rinviate oltre le quattro settimane; requisiti del pilota che allargano il perimetro.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP1</span>
+    <div class="mod-t"><h3>Piattaforma</h3><p>Le fondamenta: multi-tenancy, sicurezza, configurazione, documenti, eventi. È il pacchetto che rende economici i clienti successivi.</p></div>
+    <div class="mod-tot"><b>105 gg</b><span>€ 21.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Struttura del monolite modulare: registro dei moduli, manifesti, regole sui confini in CI, kit per moduli</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Multi-tenancy con RLS, creazione di nuovi clienti, modalità mono-cliente</td><td class="num">9</td><td class="num">€ 1.800</td></tr>
+      <tr><td>Utenti, ruoli, permessi per modulo e azione, secondo fattore, sessioni</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Configurazione per cliente: moduli attivi, parametri, aspetto, lessico, storico e ritorno</td><td class="num">8</td><td class="num">€ 1.600</td></tr>
+      <tr><td>Campi aggiuntivi, elenchi e stati configurabili, regole semplici (validazioni, valori predefiniti, condizioni)</td><td class="num">16</td><td class="num">€ 3.200</td></tr>
+      <tr><td>Numeratori e sezionali senza salti, comandi idempotenti, gestione dei conflitti</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Motore dei documenti stampabili: modelli per cliente, logo e testi modificabili, generazione PDF</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Allegati e file su storage S3</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Notifiche e-mail con modelli, dietro adattatore</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Importazione guidata CSV/XLSX con mappatura e validazione; esportazione completa dei dati</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Registro delle operazioni (attore, prima e dopo)</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Registro degli eventi (outbox) e consegna webhook</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Chiavi API per cliente con ambiti</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Ricerca globale (testo completo e trigrammi)</td><td class="num">4</td><td class="num">€ 800</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Regole semplici = condizioni su campi dello stesso documento, senza script; layout di stampa alternativi predisposti da noi, non da un editor visuale.</div><div><b>Rischi</b>Richiesta di regole più espressive (calcoli fra documenti, flussi approvativi) o di un editor grafico dei modelli: sarebbero un generatore di applicazioni, escluso dalla RDO.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP2</span>
+    <div class="mod-t"><h3>Anagrafiche</h3><p>Clienti, fornitori, vettori e agenti con tutto ciò che serve a vendite, acquisti e fatturazione elettronica.</p></div>
+    <div class="mod-tot"><b>18 gg</b><span>€ 3.600</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Clienti: sedi e destinazioni, contatti, pagamento, banche, agente, listino e sconti, fido e blocco</td><td class="num">7</td><td class="num">€ 1.400</td></tr>
+      <tr><td>Fornitori con condizioni e tempi di consegna, vettori, agenti</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Validazione partita IVA e codice fiscale, codice destinatario e PEC</td><td class="num">2</td><td class="num">€ 400</td></tr>
+      <tr><td>Note e attività sul cliente: promemoria, storico contatti</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Tabelle di base: condizioni di pagamento, aliquote e nature IVA, banche, causali</td><td class="num">2</td><td class="num">€ 400</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Validazione formale di P.IVA e CF; verifica VIES online opzionale tramite adattatore.</div><div><b>Rischi</b>Gerarchie di clienti (gruppi, case madri) non previste dalla RDO.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP3</span>
+    <div class="mod-t"><h3>Articoli, listini e condizioni commerciali</h3><p>Catalogo con varianti, unità di misura e confezioni, e un motore prezzi che spiega sempre perché un prezzo è quello.</p></div>
+    <div class="mod-tot"><b>30 gg</b><span>€ 6.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Articoli con categorie, famiglie, attributi e varianti (dimensione, materiale, finitura, norma)</td><td class="num">7</td><td class="num">€ 1.400</td></tr>
+      <tr><td>Codici alternativi (fornitore, cliente, EAN), immagini, allegati tecnici</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Unità di misura multiple, confezioni e fattori di conversione, dati logistici</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Listini multipli con validità temporale e scaglioni di quantità</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Motore prezzi: sconti per cliente, categoria e articolo, precedenze, spiegazione del prezzo applicato</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Prezzi e condizioni di acquisto per fornitore, costo e prezzo di riferimento</td><td class="num">2</td><td class="num">€ 400</td></tr>
+      <tr><td>Kit a un livello</td><td class="num">3</td><td class="num">€ 600</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Fino a tre livelli di sconto in cascata; precedenze fra condizioni fissate in WP0 sugli esempi reali del pilota.</div><div><b>Rischi</b>Condizioni del pilota oggi gestite a mano o in fogli di calcolo, da ricostruire come regole.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP4</span>
+    <div class="mod-t"><h3>Magazzino e lotti</h3><p>Giacenze affidabili, tracciabilità dei lotti dal carico allo scarico, inventario e valorizzazione.</p></div>
+    <div class="mod-tot"><b>32 gg</b><span>€ 6.400</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Depositi, ubicazioni di base, causali e movimenti</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Giacenza, impegnato, ordinato e disponibile per articolo e deposito</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Lotti con tracciabilità da carico a scarico; documenti del lotto allegati ai documenti di uscita</td><td class="num">7</td><td class="num">€ 1.400</td></tr>
+      <tr><td>Rettifiche e inventario con conteggio e differenze</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Valorizzazione a costo medio ponderato e FIFO</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Scorta minima e proposte di riordino</td><td class="num">2</td><td class="num">€ 400</td></tr>
+      <tr><td>Stampa etichette con codice a barre</td><td class="num">2</td><td class="num">€ 400</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Etichette in PDF o ZPL per stampanti termiche standard; nessuna gestione di missioni di prelievo.</div><div><b>Rischi</b>Requisito dei 10 milioni di movimenti: le giacenze sono mantenute come saldi aggiornati in transazione, verificati con test di carico in WP11.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP5</span>
+    <div class="mod-t"><h3>Vendite</h3><p>Dal preventivo alla fattura, con consegne programmate, evasioni parziali e prezzi applicati in automatico.</p></div>
+    <div class="mod-tot"><b>46 gg</b><span>€ 9.200</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Preventivi con revisioni e conversione in ordine</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Ordini cliente: righe da listino, prezzi e sconti automatici, consegne programmate per riga, conferma d'ordine</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Evasione parziale, residui, impegni a magazzino, portafoglio ordini</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Documenti di trasporto: vettore, colli, peso, causale, aspetto dei beni, lotti in uscita</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Fatture immediate, differite (raggruppamento DDT), accompagnatorie, pro-forma</td><td class="num">9</td><td class="num">€ 1.800</td></tr>
+      <tr><td>Note di credito e di debito, resi da cliente</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Invio dei documenti via e-mail, stati e cronologia</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Controllo fido e blocchi in inserimento ordine</td><td class="num">2</td><td class="num">€ 400</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Casi IVA del commercio B2B nazionale e intra-UE di beni (reverse charge, esenzioni, split payment per la PA); bollo virtuale.</div><div><b>Rischi</b>Esportazioni extra-UE con dichiarazioni d'intento e plafond, se emergono in WP0.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP6</span>
+    <div class="mod-t"><h3>Acquisti</h3><p>Ordini a fornitore, ricevimento con lotti e fatture passive dal Sistema di Interscambio.</p></div>
+    <div class="mod-tot"><b>22 gg</b><span>€ 4.400</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Ordini a fornitore, anche generati dalle proposte di riordino</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Ricevimento merce con controllo quantità e carico a magazzino con lotto</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Fatture di acquisto da XML SdI, abbinamento automatico e manuale a ordini e ricevimenti</td><td class="num">9</td><td class="num">€ 1.800</td></tr>
+      <tr><td>Resi a fornitore</td><td class="num">3</td><td class="num">€ 600</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Abbinamento automatico su riferimenti d'ordine e codici articolo presenti nell'XML; il resto con abbinamento assistito.</div><div><b>Rischi</b>Fornitori che non riportano riferimenti nelle fatture: più abbinamenti manuali, non più sviluppo.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP7</span>
+    <div class="mod-t"><h3>Fatturazione elettronica, scadenzario, incassi e pagamenti</h3><p>FatturaPA tramite intermediario accreditato, RiBa, solleciti ed esportazione al commercialista.</p></div>
+    <div class="mod-tot"><b>38 gg</b><span>€ 7.600</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Generazione XML FatturaPA per B2B e PA, validazione sullo schema ufficiale</td><td class="num">8</td><td class="num">€ 1.600</td></tr>
+      <tr><td>Adattatore intermediario: invio, ricezione, esiti e notifiche SdI, conservazione a norma</td><td class="num">8</td><td class="num">€ 1.600</td></tr>
+      <tr><td>Scadenzario attivo e passivo, rate dalle condizioni di pagamento</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Incassi e pagamenti anche parziali, abbinamento alle scadenze</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Tracciato RiBa CBI e distinte di presentazione, insoluti</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Solleciti con modelli</td><td class="num">2</td><td class="num">€ 400</td></tr>
+      <tr><td>Esportazione periodica per il commercialista nel tracciato concordato</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Un intermediario con API REST documentata e ambiente di prova, contrattualizzato dal Committente; un tracciato verso il commercialista.</div><div><b>Rischi</b>Intermediario senza ambiente di prova o con API incomplete; più tracciati per più studi; aggiornamenti delle specifiche FatturaPA durante il progetto.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP8</span>
+    <div class="mod-t"><h3>Reportistica e cruscotti</h3><p>Venduto, margini, giacenze e scaduto, con viste salvabili ed esportazione in Excel di ogni elenco.</p></div>
+    <div class="mod-tot"><b>20 gg</b><span>€ 4.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Modello di lettura per la reportistica (viste aggregate aggiornate dagli eventi)</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Venduto per cliente, articolo, famiglia, agente e periodo; margini per documento e articolo</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Giacenze, rotazione, articoli fermi; scaduto e incassato; portafoglio ordini</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Cruscotto iniziale per ruolo</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Viste salvabili, filtri, esportazione Excel</td><td class="num">3</td><td class="num">€ 600</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Report predefiniti più filtri e viste; nessun editor libero di report.</div><div><b>Rischi</b>Richiesta di uno strumento di analisi self-service: si integra come prodotto esterno via API.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP9</span>
+    <div class="mod-t"><h3>API, eventi e integrazioni</h3><p>Ciò che rende Centralino AI, Chatbot e terzi capaci di operare sul gestionale con permessi controllati.</p></div>
+    <div class="mod-tot"><b>16 gg</b><span>€ 3.200</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Documentazione OpenAPI 3 completa e navigabile: convenzioni, errori, paginazione, esempi</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Webhook firmati, riconsegna con tentativi, console di gestione per cliente</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Descrizione delle operazioni leggibile da macchina (schemi, permesso, livello di rischio), derivata dall'API</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Ambiente di prova per integratori con dati di esempio</td><td class="num">2</td><td class="num">€ 400</td></tr>
+      <tr><td>Client di esempio che simula un assistente esterno (scheda cliente, stato ordine, nuova attività)</td><td class="num">3</td><td class="num">€ 600</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>L'API nasce con le funzioni in WP1–WP8; qui si completa, si documenta e si espone a terzi.</div><div><b>Rischi</b>Nessuno rilevante: è il pacchetto più prevedibile perché costruito su ciò che già esiste.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP10</span>
+    <div class="mod-t"><h3>Esperienza d'uso e design system</h3><p>Usabile senza formazione nei flussi principali, veloce da tastiera per il lavoro ripetitivo.</p></div>
+    <div class="mod-tot"><b>38 gg</b><span>€ 7.600</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Design system: token, tipografia, spaziature, componenti, stati, messaggi</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Progettazione delle schermate principali oltre il prototipo di WP0</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Tabelle dense con navigazione da tastiera e inserimento rapido delle righe</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Versione per tablet delle funzioni di magazzino</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Prove con utenti sui cinque compiti chiave e iterazione</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Accessibilità WCAG 2.1 AA sulle schermate principali, testi esternalizzati</td><td class="num">3</td><td class="num">€ 600</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Due cicli di prova con tre utenti del pilota (prototipo e pre-rilascio); tempi obiettivo fissati in WP0.</div><div><b>Rischi</b>Utenti del pilota non disponibili nelle date previste; tempi obiettivo fissati su abitudini del gestionale attuale.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP11</span>
+    <div class="mod-t"><h3>Qualità, sicurezza, documentazione, operatività</h3><p>Ciò che permette a un altro team di prendere in mano il prodotto in due settimane.</p></div>
+    <div class="mod-tot"><b>42 gg</b><span>€ 8.400</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Integrazione continua, test di flusso sui percorsi critici, dati di esempio riproducibili</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Scenari di accettazione eseguibili per pacchetto</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Sicurezza OWASP ASVS L2: revisione, cifratura, segreti, limitazione richieste, registrazione accessi</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Registri strutturati, metriche, tracciamento errori</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Ambienti di sviluppo, prova e produzione; backup, ripristino provato, ritorno alla versione precedente</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Test di carico sui requisiti del § 5 (100 utenti, 100.000 articoli, 10 milioni di movimenti)</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Documentazione di architettura, esercizio e uso; inventario delle dipendenze con licenze</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Affiancamento al passaggio di consegne (due settimane, a tempo parziale)</td><td class="num">4</td><td class="num">€ 800</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>La verifica di sicurezza indipendente è affidata a terzi e quotata a parte (§ 09).</div><div><b>Rischi</b>Correzioni richieste dalla verifica indipendente: le assorbiamo fino a 5 giornate.</div></div>
+</section>
+
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">WP12</span>
+    <div class="mod-t"><h3>Migrazione dei dati e avviamento del pilota</h3><p>Migrazioni ripetibili e provate, formazione e sessanta giorni di esercizio assistito.</p></div>
+    <div class="mod-tot"><b>32 gg</b><span>€ 6.400</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+    <tbody>
+      <tr><td>Analisi dei dati esportati dal gestionale attuale e mappatura</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Script di migrazione ripetibili: anagrafiche, articoli, listini, giacenze e lotti, documenti aperti, storico in consultazione</td><td class="num">10</td><td class="num">€ 2.000</td></tr>
+      <tr><td>Tre migrazioni di prova con verifica delle quadrature</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
+      <tr><td>Formazione degli utenti chiave</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Affiancamento al passaggio in produzione</td><td class="num">3</td><td class="num">€ 600</td></tr>
+      <tr><td>Esercizio assistito di sessanta giorni: presidio e correzioni</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+    </tbody></table></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Esportazione completa in CSV, XLSX o dump del database fornita dal pilota; pulizia dei dati a carico del pilota con nostro supporto.</div><div><b>Rischi</b>Esportazione incompleta o solo da interfaccia; storico documenti in formati eterogenei; quadrature di magazzino che non tornano già oggi.</div></div>
+</section>
+
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">05</span><h2>Modello di evoluzione</h2></div>
+    <div class="cols">
+      <div>
+        <h3>Tre livelli di adattamento</h3>
+        <ul class="clean">
+          <li><b>Configurazione</b>: campi, elenchi, stati, documenti e modelli di stampa, numeratori, regole, lessico e cruscotti, modificati da un amministratore con storico e ritorno. Costo di sviluppo: zero.</li>
+          <li><b>Modulo aggiuntivo</b>: pacchetto con proprie tabelle, API, eventi, schermate, permessi e test, attivabile per cliente. Il kit per moduli (struttura di partenza, convenzioni, guida ed esempio completo) è compreso in WP1. Riferimento: O4, 12 giornate.</li>
+          <li><b>Modifica al nucleo</b>: eccezionale, con ADR, versione minore o maggiore e compatibilità garantita. Mai una copia del prodotto per un cliente.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Versionamento e rilascio</h3>
+        <ul class="clean">
+          <li>Versionamento semantico del nucleo; ogni modulo dichiara le versioni del nucleo con cui è compatibile.</li>
+          <li>Rilascio in ambiente di prova ogni due settimane; in produzione una volta al mese, il martedì dopo le 20:00, con avviso di cinque giorni lavorativi.</li>
+          <li>Correzioni urgenti di sicurezza fuori calendario, con comunicazione immediata.</li>
+          <li>API versionata nel percorso (<span class="mono">/v1</span>); nessuna modifica incompatibile in una versione pubblicata; deprecazioni annunciate con almeno sei mesi di anticipo.</li>
+          <li>Migrazioni della base dati in due tempi (espansione, poi contrazione), così da poter tornare alla versione precedente senza perdita di dati.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">06</span><h2>Piano e milestone</h2></div>
+    <p class="lead">Avvio il 2 novembre 2026 con conferma d'ordine entro il 23 ottobre. Ogni milestone è una consegna in ambiente di prova con gli scenari di accettazione dei pacchetti eseguiti. Agosto è a capacità ridotta e dedicato a verifica di sicurezza e migrazione di prova finale.</p>
+    <div class="gw"><div class="gantt">
+      <div></div><div class="gmonths"><div class="gm">nov</div><div class="gm">dic</div><div class="gm">gen</div><div class="gm">feb</div><div class="gm">mar</div><div class="gm">apr</div><div class="gm">mag</div><div class="gm">giu</div><div class="gm">lug</div><div class="gm">ago</div><div class="gm">set</div><div class="gm">ott</div><div class="gm">nov</div></div>
+      <div class="gl"><b>Analisi e prototipo</b><span>WP0 · 32 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:1 / 2"></div></div>
+      <div class="gl"><b>Piattaforma</b><span>WP1 · 105 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:2 / 5"></div></div>
+      <div class="gl"><b>Anagrafiche e articoli</b><span>WP2 · WP3 · 48 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:3 / 5"></div></div>
+      <div class="gl"><b>Magazzino e vendite</b><span>WP4 · WP5 · 78 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:5 / 7"></div></div>
+      <div class="gl"><b>Acquisti, FE, incassi</b><span>WP6 · WP7 · 60 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:7 / 9"></div></div>
+      <div class="gl"><b>Report e API</b><span>WP8 · WP9 · 36 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:9 / 10"></div></div>
+      <div class="gl"><b>UX e design system</b><span>WP10 · 38 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:1 / 10"></div></div>
+      <div class="gl"><b>Qualità e operatività</b><span>WP11 · 42 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:2 / 12"></div></div>
+      <div class="gl"><b>Migrazione e avviamento</b><span>WP12 · 32 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:4 / 10"></div><div class="gbar" style="grid-column:10 / 14"></div></div>
+      <div class="gl"><b>Milestone</b><span>consegne</span></div><div class="gtrack" style="height:24px"><div class="gms" style="grid-column:1 / 2">M0</div><div class="gms" style="grid-column:4 / 5">M1</div><div class="gms" style="grid-column:6 / 7">M2</div><div class="gms" style="grid-column:8 / 9">M3</div><div class="gms" style="grid-column:9 / 10">M4</div><div class="gms" style="grid-column:11 / 12">M5</div></div>
+    </div></div>
+
+    <div class="tw" style="margin-top:22px"><table>
+      <thead><tr><th>Milestone</th><th>Data</th><th>Contenuto</th></tr></thead>
+      <tbody>
+        <tr><td class="code">M0</td><td class="num" style="text-align:left">27 nov 2026</td><td>Documento di architettura, prototipo navigabile, scenari di accettazione, backlog stimato, prezzo a corpo confermato per WP1–WP12</td></tr>
+        <tr><td class="code">M1</td><td class="num" style="text-align:left">26 feb 2027</td><td>Piattaforma, anagrafiche, articoli e listini; prima migrazione di prova dei dati del pilota</td></tr>
+        <tr><td class="code">M2</td><td class="num" style="text-align:left">30 apr 2027</td><td>Magazzino e lotti, vendite fino alla fattura (PDF, non ancora inviata a SdI)</td></tr>
+        <tr><td class="code">M3</td><td class="num" style="text-align:left">25 giu 2027</td><td>Acquisti, fatturazione elettronica in ambiente di prova dell'intermediario, scadenzario, incassi, RiBa</td></tr>
+        <tr><td class="code">M4</td><td class="num" style="text-align:left">30 lug 2027</td><td>Reportistica, API pubblica e ambiente per integratori, test di carico, documentazione, seconda prova con utenti</td></tr>
+        <tr><td class="code">M5</td><td class="num" style="text-align:left">6 set 2027</td><td>Migrazione finale e avvio del pilota in produzione; esercizio assistito fino al 5 novembre 2027, poi passaggio di consegne</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="sub3">Dipendenze dal Committente</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Entro</th><th>Che cosa serve</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">2 nov 2026</td><td>Referente con potere decisionale; organizzazione GitHub (o equivalente), CI e registro container intestati al Committente, con accessi per il team</td></tr>
+        <tr><td class="mono">9 nov 2026</td><td>Contatto con il pilota; esempi reali di ordini, DDT, fatture, listini e condizioni; esportazione completa di prova dal gestionale attuale</td></tr>
+        <tr><td class="mono">16 nov 2026</td><td>Tre utenti del pilota disponibili per la prova del prototipo (mezza giornata ciascuno); contatto con il commercialista del pilota</td></tr>
+        <tr><td class="mono">27 nov 2026</td><td>Approvazione di WP0 entro cinque giorni lavorativi dalla consegna; scelta dell'intermediario SdI</td></tr>
+        <tr><td class="mono">15 gen 2027</td><td>Contratto di hosting in UE con accordo di trattamento dati; domini</td></tr>
+        <tr><td class="mono">1 mar 2027</td><td>Contratto con l'intermediario SdI e credenziali dell'ambiente di prova; specifiche CBI della banca del pilota per le RiBa</td></tr>
+        <tr><td class="mono">4 giu 2027</td><td>Tracciato di esportazione validato dal commercialista</td></tr>
+        <tr><td class="mono">12 lug 2027</td><td>Utenti del pilota per la seconda prova; incarico alla società della verifica di sicurezza indipendente</td></tr>
+        <tr><td class="mono">27 ago 2027</td><td>Via libera al passaggio in produzione; blocco delle modifiche sul gestionale attuale per la migrazione finale</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 07 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">07</span><h2>Requisiti non funzionali</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th>Ambito</th><th>Come li verifichiamo</th></tr></thead>
+      <tbody>
+        <tr><td>Prestazioni e dimensioni</td><td class="dim">Paginazione e filtri lato server, indici per cliente; test di carico in M4 con 100 utenti concorrenti, catalogo da 100.000 articoli, 10 milioni di movimenti e 100 clienti generati; risultati allegati alla consegna.</td></tr>
+        <tr><td>Disponibilità e continuità</td><td class="dim">WAL continuo verso storage esterno (RPO ≤ 1 h), backup giornalieri conservati 30 giorni, prova di ripristino mensile cronometrata (RTO ≤ 4 h), procedura di ritorno alla versione precedente documentata.</td></tr>
+        <tr><td>Sicurezza</td><td class="dim">Lista di controllo ASVS L2 compilata e consegnata; TLS 1.2+, cifratura a riposo di volumi e backup, secondo fattore, segreti fuori dal codice, registrazione degli accessi.</td></tr>
+        <tr><td>Protezione dei dati</td><td class="dim">Dati e backup in UE; esportazione e anonimizzazione per interessato nei limiti degli obblighi di conservazione; documentazione a supporto del registro dei trattamenti.</td></tr>
+        <tr><td>Compatibilità e lingua</td><td class="dim">Ultime due versioni di Chrome, Edge, Firefox e Safari; tablet da 10"; italiano con testi esternalizzati e formati italiani.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 08 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">08</span><h2>Opzionali</h2></div>
+    <p class="lead">Stime a listino (€ 200/gg), sviluppati sulla piattaforma come moduli aggiuntivi senza modifiche al nucleo. Lo sconto del 20% si estende agli opzionali ordinati entro M4.</p>
+    <div class="tw" style="margin-top:16px"><table>
+      <thead><tr><th>Cod.</th><th>Modulo</th><th>Contenuto e assunzioni</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+      <tbody>
+        <tr><td class="code">O1</td><td>Contabilità generale</td><td class="dim">Piano dei conti, causali, prima nota con registrazioni automatiche dai documenti, registri e liquidazione IVA, libro giornale, partitari, bilancio di verifica. Esclusi bilancio CEE e dichiarativi.</td><td class="num">70</td><td class="num">€ 14.000</td></tr>
+        <tr><td class="code">O2</td><td>Portale clienti B2B</td><td class="dim">Accesso per gli utenti del cliente, catalogo e listino personale, inserimento ordini, stato ordini, scaricamento documenti.</td><td class="num">28</td><td class="num">€ 5.600</td></tr>
+        <tr><td class="code">O3</td><td>Scorte presso clienti e riordino programmato</td><td class="dim">Depositi in conto deposito, livelli di riordino per cliente, proposte e consegne programmate.</td><td class="num">18</td><td class="num">€ 3.600</td></tr>
+        <tr><td class="code">O4</td><td>Provvigioni agenti</td><td class="dim">Modulo di riferimento, dettaglio sotto.</td><td class="num">12</td><td class="num">€ 2.400</td></tr>
+        <tr><td class="code">O5</td><td>App di magazzino con lettore di codici a barre</td><td class="dim">Applicazione web installabile (PWA) per ricevimento, prelievo e inventario, con lettori a pistola o fotocamera. Nessuna app nativa.</td><td class="num">22</td><td class="num">€ 4.400</td></tr>
+        <tr><td class="code">O6</td><td>Distinta base multilivello e ordini di produzione</td><td class="dim">Distinte multilivello, fabbisogni, ordini di produzione, versamenti e consumi a magazzino. Senza pianificazione a capacità finita.</td><td class="num">40</td><td class="num">€ 8.000</td></tr>
+        <tr><td class="code">O7</td><td>Commesse, interventi e ticket</td><td class="dim">Commesse con costi e ricavi, rapportini d'intervento, ticket con stati e assegnazioni, fatturazione degli interventi.</td><td class="num">30</td><td class="num">€ 6.000</td></tr>
+        <tr><td class="code">O8</td><td>Qualità: non conformità e reclami</td><td class="dim">Registrazione, collegamento a lotti e documenti, azioni correttive, allegati, esportazione.</td><td class="num">12</td><td class="num">€ 2.400</td></tr>
+      </tbody>
+      <tfoot><tr><td></td><td colspan="2">Totale opzionali O1–O8 a listino</td><td class="num">232</td><td class="num">€ 46.400</td></tr></tfoot>
+    </table></div>
+
+    <section class="mod" style="margin-top:22px">
+      <header class="mod-h"><span class="mod-code">O4</span>
+        <div class="mod-t"><h3>Provvigioni agenti — modulo di riferimento</h3><p>Legge documenti e incassi solo tramite eventi e API pubbliche; ha tabelle, permessi e schermate proprie.</p></div>
+        <div class="mod-tot"><b>12 gg</b><span>€ 2.400</span></div></header>
+      <div class="tw"><table class="items">
+        <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
+        <tbody>
+          <tr><td>Regole provvigionali per agente, cliente, famiglia e articolo, con scaglioni</td><td class="num">3</td><td class="num">€ 600</td></tr>
+          <tr><td>Maturazione sul fatturato o sull'incassato, dagli eventi "documento emesso" e "incasso registrato"</td><td class="num">3</td><td class="num">€ 600</td></tr>
+          <tr><td>Estratto conto agente, liquidazione, storni per note di credito e insoluti</td><td class="num">3</td><td class="num">€ 600</td></tr>
+          <tr><td>Calcolo Enasarco e FIRR</td><td class="num">1</td><td class="num">€ 200</td></tr>
+          <tr><td>Report, permessi, test e documentazione del modulo</td><td class="num">2</td><td class="num">€ 400</td></tr>
+        </tbody></table></div>
+      <div class="mod-f"><div><b>Lettura</b>Senza piattaforma lo stesso modulo richiederebbe circa 20 giornate: il kit per moduli, gli eventi e la configurazione ne coprono circa il 40%.</div><div><b>Uso del dato</b>Un modulo tipico costa 10–20 giornate; un modulo con un dominio proprio (O1, O6) 40–70.</div></div>
+    </section>
+  </section>
+
+  <!-- 09 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">09</span><h2>Prezzi e canoni</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th>Voce</th><th>Modalità</th><th class="num">Importo</th></tr></thead>
+      <tbody>
+        <tr><td>WP0 — Analisi, architettura e prototipo</td><td class="dim">A corpo, fatturato alla consegna di M0</td><td class="num">€ 5.120</td></tr>
+        <tr><td>WP1–WP12 — Versione 1</td><td class="dim">A corpo, confermato in M0 entro la forchetta; fatturato per milestone</td><td class="num">€ 70.240</td></tr>
+        <tr><td>Tariffa per evoluzioni future (§ 6 della RDO)</td><td class="dim">Giornata-persona, € 25/h, per qualunque profilo</td><td class="num">€ 200/gg</td></tr>
+        <tr><td>Manutenzione correttiva e adeguativa</td><td class="dim">Canone annuo dopo il rilascio: dipendenze, adeguamenti normativi FatturaPA, patch di sicurezza, compatibilità con i fornitori integrati; fino a 4 gg/mese</td><td class="num">€ 9.600/anno</td></tr>
+        <tr><td>O9 — Hosting e gestione operativa</td><td class="dim">Aggiornamenti, monitoraggio, backup e prove di ripristino, assistenza di secondo livello; fino a 2 gg/mese</td><td class="num">€ 4.800/anno</td></tr>
+        <tr><td>Infrastruttura dell'istanza condivisa</td><td class="dim">Riaddebitata al costo, contratto intestato al Committente; stima per fino a 100 clienti su provider UE</td><td class="num">€ 2.400–4.200/anno</td></tr>
+        <tr><td>Verifica di sicurezza indipendente</td><td class="dim">Da affidare a una società terza per garantirne l'indipendenza; stima di mercato, non fatturata da noi</td><td class="num">€ 4.000–7.000</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Tutti gli importi sono al netto di IVA. Ripartizione per milestone di WP1–WP12: M1 30%, M2 25%, M3 20%, M4 15%, M5 10% alla chiusura dell'esercizio assistito. Pagamento a 30 giorni data fattura.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="s pad">
+    <div class="s-h"><span class="n">10</span><h2>Rischi, assunzioni e richieste</h2></div>
+    <div class="cols">
+      <div>
+        <h3>Rischi principali e come li gestiamo</h3>
+        <ul class="clean">
+          <li><b>Il pilota diventa il prodotto.</b> Ogni richiesta del pilota passa dalla domanda "configurazione, modulo o nucleo?"; le eccezioni al perimetro sono stimate a parte e approvate dal Committente.</li>
+          <li><b>Configurabilità che sfugge di mano.</b> Il perimetro di P3 è fissato in WP0 con esempi concreti; oltre quel perimetro si scrive un modulo, non si estende il motore.</li>
+          <li><b>Intermediario SdI.</b> Scelto in WP0 dopo una prova sulla sua API; adattatore con implementazione di prova, così lo sviluppo non si blocca in attesa del contratto.</li>
+          <li><b>Dati del pilota.</b> Prima migrazione di prova già in M1, per scoprire presto i problemi di qualità dei dati.</li>
+          <li><b>Team piccolo.</b> Revisione incrociata di ogni modifica, ADR, documentazione continua e repository del Committente riducono la dipendenza da una persona.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Assunzioni generali</h3>
+        <ul class="clean">
+          <li>Un solo cliente pilota, un'azienda, un deposito principale più eventuali secondari.</li>
+          <li>Interfaccia solo in italiano; valuta solo euro nei documenti di vendita.</li>
+          <li>Un intermediario SdI, una banca per le RiBa, un tracciato verso il commercialista.</li>
+          <li>Decisioni del Committente entro cinque giorni lavorativi dalla richiesta.</li>
+          <li>Costi di fornitori terzi (hosting, intermediario, posta, domini) a carico del Committente.</li>
+          <li>Correzione dei difetti inclusa per tutto l'esercizio assistito; poi rientra nel canone di manutenzione.</li>
+        </ul>
+        <h3 style="margin-top:22px">Che cosa chiediamo per riuscire</h3>
+        <ul class="clean">
+          <li>Un referente con potere decisionale e una revisione a ogni milestone.</li>
+          <li>Accesso diretto, organizzato dal Committente, a un referente operativo del pilota.</li>
+          <li>Le dipendenze del § 06 rispettate nelle date indicate; uno slittamento sposta le milestone di pari durata.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:22px">Fuori perimetro, come da RDO: paghe e personale, interconnessione macchinari, commercio elettronico verso consumatori, app native, integrazioni non elencate. Su ogni dubbio di perimetro siamo disponibili a un incontro prima dell'ordine.</p>
+  </section>
+
+  <footer class="foot pad">
+    <span><b><span class="ph">[Ragione sociale fornitore]</span></b> · <span class="ph">[P.IVA]</span> · <span class="ph">[contatti]</span></span>
+    <span class="mono">OFF-GEST-2026-01 · 04/10/2026</span>
+  </footer>
+</main>
+</body>
+</html>
