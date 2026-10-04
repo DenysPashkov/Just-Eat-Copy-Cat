@@ -161,8 +161,8 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 }
 </style>
 <style>
-.gmonths,.gtrack{grid-template-columns:repeat(8,minmax(0,1fr))}
-.gtrack{background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100% / 8))}
+.gmonths,.gtrack{grid-template-columns:repeat(9,minmax(0,1fr))}
+.gtrack{background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100% / 9))}
 .gantt{min-width:600px}
 .flow{grid-template-columns:repeat(5,minmax(0,1fr))}
 @media (max-width:760px){ .flow{grid-template-columns:1fr 1fr} }
@@ -175,7 +175,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
   <header class="top pad">
     <div class="brand"><b><span class="ph">[Ragione sociale fornitore]</span></b><small>Preventivo OFF-CAI-2026-02</small></div>
     <h1>Centralino AI con chat e prenotazioni, multi-cliente</h1>
-    <p class="sub">Sviluppo di una piattaforma da offrire in abbonamento a più aziende: un agente AI che risponde al telefono e in chat, prende appuntamenti e passa la conversazione a un operatore quando serve. Ogni minuto e ogni chat sono misurati, con quote gratuite e prezzi oltre quota impostabili cliente per cliente. È costruita come base modulare su cui aggiungere i moduli futuri.</p>
+    <p class="sub">Sviluppo di una piattaforma da offrire in abbonamento a più aziende: un agente AI multilingua che risponde al telefono e in chat, prende appuntamenti in un calendario integrato, manda promemoria su WhatsApp e passa la conversazione a un operatore quando serve. Ogni minuto e ogni chat sono misurati, con quote gratuite e prezzi oltre quota impostabili cliente per cliente, e fatturati in automatico. È costruita come base modulare su cui aggiungere i moduli futuri.</p>
     <dl class="meta">
       <div><dt>Riferimento</dt><dd class="mono">OFF-CAI-2026-02</dd></div>
       <div><dt>Data</dt><dd>4 ottobre 2026</dd></div>
@@ -186,29 +186,29 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 
   <div class="price">
     <div class="calc pad">
-      <div class="row"><span>Sviluppo: 2.400 ore × € 25/h</span><span class="num">€ 60.000</span></div>
-      <div class="row disc"><span>Sconto commerciale (20%)</span><span class="num">−€ 12.000</span></div>
-      <div class="row tot"><span>Totale</span><span class="num">€ 48.000</span></div>
+      <div class="row"><span>Sviluppo: 2.820 ore × € 25/h</span><span class="num">€ 70.500</span></div>
+      <div class="row disc"><span>Sconto commerciale (20%)</span><span class="num">−€ 14.100</span></div>
+      <div class="row tot"><span>Totale</span><span class="num">€ 56.400</span></div>
       <small>Importi al netto di IVA. Costi dei fornitori (telefonia, AI, infrastruttura) esclusi, vedi § 07.</small>
     </div>
     <div class="facts pad">
-      <div><span class="lbl">Ore</span><b>2.400</b></div>
-      <div><span class="lbl">Moduli</span><b>16</b></div>
-      <div><span class="lbl">Durata</span><b>8<small>mesi</small></b></div>
+      <div><span class="lbl">Ore</span><b>2.820</b></div>
+      <div><span class="lbl">Moduli</span><b>20</b></div>
+      <div><span class="lbl">Durata</span><b>9<small>mesi</small></b></div>
       <div><span class="lbl">Tariffa effettiva</span><b>€ 20<small>/h</small></b></div>
     </div>
   </div>
 
   <section class="s pad">
     <div class="s-h"><span class="n">01</span><h2>Oggetto della fornitura</h2></div>
-    <p class="lead">La piattaforma risponde alle chiamate e alle chat dei clienti finali di ogni azienda con un agente AI in linguaggio naturale, consulta la knowledge base dell'azienda, prenota, sposta e disdice appuntamenti e passa la conversazione a un operatore quando serve.</p>
-    <p class="lead">È pensata per essere venduta a molte aziende sulla stessa installazione. Ogni azienda ha la propria configurazione: numeri, agente, voce, orari, moduli attivi, e soprattutto le proprie quote gratuite e i propri prezzi oltre quota. Le prenotazioni sono il primo modulo; i successivi si aggiungono senza toccare il nucleo.</p>
+    <p class="lead">La piattaforma risponde alle chiamate e alle chat dei clienti finali di ogni azienda con un agente AI in linguaggio naturale, consulta la knowledge base dell'azienda, prenota, sposta e disdice appuntamenti nel calendario dell'azienda, manda conferme e promemoria su WhatsApp e passa la conversazione a un operatore quando serve. Parla e scrive in cinque lingue.</p>
+    <p class="lead">È pensata per essere venduta a molte aziende sulla stessa installazione. Ogni azienda ha la propria configurazione: numeri, agente, voce, orari, moduli attivi, e soprattutto le proprie quote gratuite e i propri prezzi oltre quota. A fine mese canone ed eccedenze sono addebitati e fatturati in automatico. Prenotazioni e calendario sono i primi moduli; i successivi si aggiungono senza toccare il nucleo.</p>
     <div class="flow">
-      <div class="step"><b>Canali</b><span>Telefono con numero per cliente, chat sul sito</span></div>
+      <div class="step"><b>Canali</b><span>Telefono con numero per cliente, chat sul sito, promemoria WhatsApp</span></div>
       <div class="step"><b>Telefonia</b><span>Operatore voce dietro adattatore, instradamento, trasferimento</span></div>
       <div class="step"><b>Motore voce</b><span>STT → LLM → TTS in streaming, interruzioni gestite</span></div>
-      <div class="step"><b>Agente e moduli</b><span>Knowledge base, prenotazioni, moduli futuri attivabili</span></div>
-      <div class="step"><b>Consumi</b><span>Minuti e chat misurati, quote gratuite, eccedenze, margine</span></div>
+      <div class="step"><b>Agente e moduli</b><span>Cinque lingue, knowledge base, prenotazioni e calendario, moduli futuri</span></div>
+      <div class="step"><b>Consumi e fatture</b><span>Quote gratuite, eccedenze, margine, addebito e fattura elettronica</span></div>
     </div>
   </section>
 
@@ -234,7 +234,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
           <li>Avvisi automatici all'80% e al 100% della quota</li>
           <li>Rendiconto mensile: incluso, oltre quota, importo delle eccedenze</li>
           <li>Costo dei fornitori per ogni chiamata e chat e margine per cliente</li>
-          <li>Esportazione CSV e API per la fatturazione, automatica con l'opzionale O6</li>
+          <li>Fattura elettronica e addebito automatici a fine mese per canone ed eccedenze (M12)</li>
           <li>Ogni nuovo modulo può dichiarare proprie unità misurabili, con le stesse regole</li>
         </ul>
       </div>
@@ -287,6 +287,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
           <li>Supabase PostgreSQL con Row Level Security e pgvector</li>
           <li>Cloudflare Workers, Durable Objects, Queues, R2, Hyperdrive</li>
           <li>Operatore voce (Telnyx o Twilio), STT, LLM e TTS tramite adattatori</li>
+          <li>Stripe per gli addebiti, intermediario SdI per le fatture, WhatsApp Business Platform</li>
         </ul>
       </div>
     </div>
@@ -296,18 +297,18 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <div class="s-h"><span class="n">04</span><h2>Riepilogo economico</h2></div>
     <div class="tw"><table>
       <thead><tr><th>Cod.</th><th>Modulo</th><th>Fase</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
-      <tbody><tr><td class="code">M01</td><td>Analisi, architettura e setup</td><td class="dim">Fondamenta</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M02</td><td>Piattaforma multi-cliente e moduli</td><td class="dim">Fondamenta</td><td class="num">200</td><td class="num">€ 5.000</td></tr><tr><td class="code">M03</td><td>Telefonia</td><td class="dim">Voce</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M04</td><td>Motore voce in tempo reale</td><td class="dim">Voce</td><td class="num">260</td><td class="num">€ 6.500</td></tr><tr><td class="code">M05</td><td>Astrazione provider AI</td><td class="dim">Voce</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M06</td><td>Agente e knowledge base</td><td class="dim">Agente e chat</td><td class="num">200</td><td class="num">€ 5.000</td></tr><tr><td class="code">M07</td><td>Chat</td><td class="dim">Agente e chat</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M08</td><td>Prenotazioni</td><td class="dim">Prenotazioni</td><td class="num">220</td><td class="num">€ 5.500</td></tr><tr><td class="code">M09</td><td>Utilizzi, quote gratuite e consumi</td><td class="dim">Consumi</td><td class="num">220</td><td class="num">€ 5.500</td></tr><tr><td class="code">M10</td><td>Pannello di amministrazione</td><td class="dim">Pannelli</td><td class="num">120</td><td class="num">€ 3.000</td></tr><tr><td class="code">M11</td><td>Dashboard cliente</td><td class="dim">Pannelli</td><td class="num">160</td><td class="num">€ 4.000</td></tr><tr><td class="code">M12</td><td>Sicurezza, privacy e conformità</td><td class="dim">Scala</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">M13</td><td>API pubblica</td><td class="dim">Scala</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">M14</td><td>Osservabilità, affidabilità e portabilità</td><td class="dim">Scala</td><td class="num">90</td><td class="num">€ 2.250</td></tr><tr><td class="code">M15</td><td>Test e qualità</td><td class="dim">Rilascio</td><td class="num">160</td><td class="num">€ 4.000</td></tr><tr><td class="code">M16</td><td>Gestione progetto e rilascio</td><td class="dim">Rilascio</td><td class="num">130</td><td class="num">€ 3.250</td></tr></tbody>
+      <tbody><tr><td class="code">M01</td><td>Analisi, architettura e setup</td><td class="dim">Fondamenta</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M02</td><td>Piattaforma multi-cliente e moduli</td><td class="dim">Fondamenta</td><td class="num">200</td><td class="num">€ 5.000</td></tr><tr><td class="code">M03</td><td>Telefonia</td><td class="dim">Voce</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M04</td><td>Motore voce in tempo reale</td><td class="dim">Voce</td><td class="num">260</td><td class="num">€ 6.500</td></tr><tr><td class="code">M05</td><td>Astrazione provider AI</td><td class="dim">Voce</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M06</td><td>Agente e knowledge base</td><td class="dim">Agente e chat</td><td class="num">200</td><td class="num">€ 5.000</td></tr><tr><td class="code">M07</td><td>Chat</td><td class="dim">Agente e chat</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M08</td><td>Prenotazioni</td><td class="dim">Prenotazioni</td><td class="num">150</td><td class="num">€ 3.750</td></tr><tr><td class="code">M09</td><td>Calendario</td><td class="dim">Prenotazioni</td><td class="num">180</td><td class="num">€ 4.500</td></tr><tr><td class="code">M10</td><td>Promemoria WhatsApp</td><td class="dim">Messaggi e lingue</td><td class="num">100</td><td class="num">€ 2.500</td></tr><tr><td class="code">M11</td><td>Utilizzi, quote gratuite e consumi</td><td class="dim">Consumi</td><td class="num">220</td><td class="num">€ 5.500</td></tr><tr><td class="code">M12</td><td>Fatturazione automatica</td><td class="dim">Consumi</td><td class="num">110</td><td class="num">€ 2.750</td></tr><tr><td class="code">M13</td><td>Multilingua</td><td class="dim">Messaggi e lingue</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">M14</td><td>Pannello di amministrazione</td><td class="dim">Pannelli</td><td class="num">120</td><td class="num">€ 3.000</td></tr><tr><td class="code">M15</td><td>Dashboard cliente</td><td class="dim">Pannelli</td><td class="num">160</td><td class="num">€ 4.000</td></tr><tr><td class="code">M16</td><td>Sicurezza, privacy e conformità</td><td class="dim">Scala</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">M17</td><td>API pubblica</td><td class="dim">Scala</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">M18</td><td>Osservabilità, affidabilità e portabilità</td><td class="dim">Scala</td><td class="num">90</td><td class="num">€ 2.250</td></tr><tr><td class="code">M19</td><td>Test e qualità</td><td class="dim">Rilascio</td><td class="num">180</td><td class="num">€ 4.500</td></tr><tr><td class="code">M20</td><td>Gestione progetto e rilascio</td><td class="dim">Rilascio</td><td class="num">130</td><td class="num">€ 3.250</td></tr></tbody>
       <tfoot>
-        <tr><td></td><td colspan="2">Totale a listino</td><td class="num">2.400</td><td class="num">€ 60.000</td></tr>
-        <tr class="disc"><td></td><td colspan="3">Sconto commerciale (20%)</td><td class="num">−€ 12.000</td></tr>
-        <tr class="grand"><td></td><td colspan="3">Totale</td><td class="num">€ 48.000</td></tr>
+        <tr><td></td><td colspan="2">Totale a listino</td><td class="num">2.820</td><td class="num">€ 70.500</td></tr>
+        <tr class="disc"><td></td><td colspan="3">Sconto commerciale (20%)</td><td class="num">−€ 14.100</td></tr>
+        <tr class="grand"><td></td><td colspan="3">Totale</td><td class="num">€ 56.400</td></tr>
       </tfoot>
     </table></div>
     <div class="range">
-      <div><span class="lbl">Minimo</span><span class="v">2.150 h · € 43.000</span></div>
-      <div><span class="lbl">Stima</span><span class="v hi">2.400 h · € 48.000</span></div>
-      <div><span class="lbl">Massimo</span><span class="v">2.800 h · € 56.000</span></div>
-      <p>Importi scontati. La voce più variabile è il motore voce: la latenza percepita dipende da fornitori e linee reali, e ottenere una conversazione davvero naturale può richiedere più iterazioni. Seguono la sincronizzazione dei calendari e le regole di disponibilità dei primi clienti.</p>
+      <div><span class="lbl">Minimo</span><span class="v">2.550 h · € 51.000</span></div>
+      <div><span class="lbl">Stima</span><span class="v hi">2.820 h · € 56.400</span></div>
+      <div><span class="lbl">Massimo</span><span class="v">3.300 h · € 66.000</span></div>
+      <p>Importi scontati. La voce più variabile è il motore voce: la latenza percepita dipende da fornitori e linee reali, e ottenere una conversazione davvero naturale può richiedere più iterazioni. Seguono la sincronizzazione bidirezionale dei calendari, l'approvazione dei modelli WhatsApp da parte di Meta e l'API dell'intermediario SdI scelto.</p>
     </div>
   </section>
 
@@ -374,21 +375,53 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 <section class="mod">
   <header class="mod-h"><span class="mod-code">M08</span>
     <div class="mod-t"><h3>Prenotazioni</h3><p>Il primo modulo funzionale: prenotare, spostare e disdire per telefono e in chat.</p></div>
-    <div class="mod-tot"><b>220 h</b><span>€ 5.500</span></div></header>
+    <div class="mod-tot"><b>150 h</b><span>€ 3.750</span></div></header>
   <div class="tw"><table class="items">
     <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
-    <tbody><tr><td>Servizi, risorse e persone, sedi, durate, pause tra appuntamenti</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Motore delle disponibilità: orari, eccezioni, ferie, capienza, anticipo minimo</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Prenotazione, modifica e disdetta via voce e chat come strumenti dell&#x27;agente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Sincronizzazione con Google Calendar e Outlook</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Conferme e promemoria via SMS ed e-mail</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Calendario delle prenotazioni nella dashboard del cliente</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+    <tbody><tr><td>Servizi, risorse e persone, sedi, durate, pause tra appuntamenti</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Motore delle disponibilità: orari, eccezioni, ferie, capienza, anticipo minimo</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Prenotazione, modifica e disdetta via voce e chat come strumenti dell&#x27;agente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Conferme e promemoria via SMS ed e-mail</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
 </section>
 <section class="mod">
   <header class="mod-h"><span class="mod-code">M09</span>
+    <div class="mod-t"><h3>Calendario</h3><p>L&#x27;agenda del cliente, dove arrivano le prenotazioni prese dal centralino e dalla chat e dove il personale lavora ogni giorno.</p></div>
+    <div class="mod-tot"><b>180 h</b><span>€ 4.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Agenda per giorno, settimana e mese, per persona, risorsa e sede</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Gestione manuale: nuovo appuntamento, spostamento con trascinamento, annullamento, blocchi e ferie</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Stati dell&#x27;appuntamento (confermato, arrivato, non presentato) e note</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Sincronizzazione bidirezionale con Google Calendar e Outlook</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Feed iCal da aggiungere al calendario del telefono</td><td class="num">10</td><td class="num">€ 250</td></tr><tr><td>Versione per tablet e telefono</td><td class="num">15</td><td class="num">€ 375</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M10</span>
+    <div class="mod-t"><h3>Promemoria WhatsApp</h3><p>Conferme e promemoria degli appuntamenti su WhatsApp, con risposta rapida per confermare o disdire.</p></div>
+    <div class="mod-tot"><b>100 h</b><span>€ 2.500</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Adattatore WhatsApp Business Platform, numero mittente per cliente</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Modelli di messaggio approvati da Meta, gestiti per cliente e per lingua</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Consenso e disiscrizione del cliente finale</td><td class="num">10</td><td class="num">€ 250</td></tr><tr><td>Invio di conferme e promemoria pianificati, ricaduta su SMS se WhatsApp non è disponibile</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Pulsanti &quot;Confermo&quot; e &quot;Disdico&quot; che aggiornano il calendario</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Stato di consegna e lettura, costo per messaggio conteggiato nei consumi</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M11</span>
     <div class="mod-t"><h3>Utilizzi, quote gratuite e consumi</h3><p>Ogni minuto e ogni chat misurati, con quota gratuita e prezzi oltre quota diversi per ogni cliente.</p></div>
     <div class="mod-tot"><b>220 h</b><span>€ 5.500</span></div></header>
   <div class="tw"><table class="items">
     <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
-    <tbody><tr><td>Misurazione per evento: secondi di chiamata, conversazioni e messaggi di chat, SMS, prenotazioni</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Piani con quote gratuite per periodo e personalizzazione per singolo cliente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Calcolo delle eccedenze con prezzi per cliente, scaglioni e regole di arrotondamento</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Comportamento al superamento (continua, avvisa, blocca) e avvisi all&#x27;80% e al 100%</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Costo dei fornitori per chiamata e chat con listini versionati, margine per cliente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Rendiconto mensile per cliente, esportazione CSV e API per la fatturazione</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody></table></div>
+    <tbody><tr><td>Misurazione per evento: secondi di chiamata, conversazioni e messaggi di chat, SMS, WhatsApp, prenotazioni</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Piani con quote gratuite per periodo e personalizzazione per singolo cliente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Calcolo delle eccedenze con prezzi per cliente, scaglioni e regole di arrotondamento</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Comportamento al superamento (continua, avvisa, blocca) e avvisi all&#x27;80% e al 100%</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Costo dei fornitori per chiamata e chat con listini versionati, margine per cliente</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Rendiconto mensile per cliente, esportazione CSV e API</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M10</span>
+  <header class="mod-h"><span class="mod-code">M12</span>
+    <div class="mod-t"><h3>Fatturazione automatica</h3><p>A fine mese ogni cliente riceve fattura e addebito di canone ed eccedenze, senza interventi manuali.</p></div>
+    <div class="mod-tot"><b>110 h</b><span>€ 2.750</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Integrazione Stripe: clienti, abbonamenti, addebiti a consumo dai rendiconti</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Addebito automatico su carta o SEPA, pagamenti falliti, sollecito e sospensione del servizio</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Fattura elettronica inviata allo SdI tramite intermediario dietro adattatore, note di credito</td><td class="num">35</td><td class="num">€ 875</td></tr><tr><td>Area fatture e metodo di pagamento nella dashboard del cliente</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Riconciliazione degli incassi ed esportazione per il commercialista</td><td class="num">10</td><td class="num">€ 250</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M13</span>
+    <div class="mod-t"><h3>Multilingua</h3><p>Agente, interfacce e messaggi in italiano, inglese, spagnolo, francese e tedesco.</p></div>
+    <div class="mod-tot"><b>80 h</b><span>€ 2.000</span></div></header>
+  <div class="tw"><table class="items">
+    <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
+    <tbody><tr><td>Riconoscimento della lingua e agente multilingua in voce e in chat</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Testi di pannello, dashboard e widget esternalizzati e tradotti in cinque lingue</td><td class="num">25</td><td class="num">€ 625</td></tr><tr><td>Modelli di SMS, e-mail e WhatsApp per lingua</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Knowledge base e voci per lingua</td><td class="num">10</td><td class="num">€ 250</td></tr></tbody></table></div>
+</section>
+<section class="mod">
+  <header class="mod-h"><span class="mod-code">M14</span>
     <div class="mod-t"><h3>Pannello di amministrazione</h3><p>La console interna per gestire clienti, piani, quote, numeri e fornitori.</p></div>
     <div class="mod-tot"><b>120 h</b><span>€ 3.000</span></div></header>
   <div class="tw"><table class="items">
@@ -396,7 +429,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <tbody><tr><td>Gestione di clienti, piani, quote, moduli e numeri</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Monitoraggio delle chiamate in corso e dei consumi</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Configurazione dei fornitori e dei listini di costo</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Accesso di supporto all&#x27;account di un cliente, con registro</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M11</span>
+  <header class="mod-h"><span class="mod-code">M15</span>
     <div class="mod-t"><h3>Dashboard cliente</h3><p>Il cliente configura il proprio agente e vede risultati e consumi.</p></div>
     <div class="mod-tot"><b>160 h</b><span>€ 4.000</span></div></header>
   <div class="tw"><table class="items">
@@ -404,7 +437,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <tbody><tr><td>Attivazione guidata del servizio</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Configurazione di agente, orari e knowledge base</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Storico di chiamate e chat: trascrizioni, registrazioni, riassunti</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td>Consumi rispetto alla quota e statistiche</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Notifiche e report periodici</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M12</span>
+  <header class="mod-h"><span class="mod-code">M16</span>
     <div class="mod-t"><h3>Sicurezza, privacy e conformità</h3><p>GDPR e AI Act gestiti dalla piattaforma, non dal singolo cliente.</p></div>
     <div class="mod-tot"><b>80 h</b><span>€ 2.000</span></div></header>
   <div class="tw"><table class="items">
@@ -412,7 +445,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <tbody><tr><td>GDPR: consenso alla registrazione, conservazione configurabile, richieste degli interessati</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>AI Act: avviso di interazione con un&#x27;AI e registri</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Cifratura, gestione dei segreti, limitazione delle richieste</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Documentazione a supporto del registro dei trattamenti</td><td class="num">15</td><td class="num">€ 375</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M13</span>
+  <header class="mod-h"><span class="mod-code">M17</span>
     <div class="mod-t"><h3>API pubblica</h3><p>Integrazioni di terzi e moduli esterni.</p></div>
     <div class="mod-tot"><b>60 h</b><span>€ 1.500</span></div></header>
   <div class="tw"><table class="items">
@@ -420,7 +453,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <tbody><tr><td>API REST e webhook sugli eventi</td><td class="num">35</td><td class="num">€ 875</td></tr><tr><td>Documentazione OpenAPI</td><td class="num">25</td><td class="num">€ 625</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M14</span>
+  <header class="mod-h"><span class="mod-code">M18</span>
     <div class="mod-t"><h3>Osservabilità, affidabilità e portabilità</h3><p>Ogni chiamata tracciata, backup provati, pronto a spostarsi su un server.</p></div>
     <div class="mod-tot"><b>90 h</b><span>€ 2.250</span></div></header>
   <div class="tw"><table class="items">
@@ -428,15 +461,15 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <tbody><tr><td>Log, metriche e tracciamento per singola chiamata</td><td class="num">30</td><td class="num">€ 750</td></tr><tr><td>Avvisi e pagina di stato</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Backup e ripristino provato</td><td class="num">15</td><td class="num">€ 375</td></tr><tr><td>Versione per server: immagine Docker, file Compose, prova di trasloco</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M15</span>
+  <header class="mod-h"><span class="mod-code">M19</span>
     <div class="mod-t"><h3>Test e qualità</h3><p>Test automatici su codice, conversazioni e carico.</p></div>
-    <div class="mod-tot"><b>160 h</b><span>€ 4.000</span></div></header>
+    <div class="mod-tot"><b>180 h</b><span>€ 4.500</span></div></header>
   <div class="tw"><table class="items">
     <thead><tr><th>Attività</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
-    <tbody><tr><td>Test automatici unitari, di integrazione ed end-to-end</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td>Test conversazionali: chiamate simulate, regressione delle istruzioni</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Test di carico su chiamate contemporanee</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Pilota con clienti reali</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
+    <tbody><tr><td>Test automatici unitari, di integrazione ed end-to-end, compresi fatturazione e promemoria</td><td class="num">90</td><td class="num">€ 2.250</td></tr><tr><td>Test conversazionali: chiamate simulate, regressione delle istruzioni</td><td class="num">50</td><td class="num">€ 1.250</td></tr><tr><td>Test di carico su chiamate contemporanee</td><td class="num">20</td><td class="num">€ 500</td></tr><tr><td>Pilota con clienti reali</td><td class="num">20</td><td class="num">€ 500</td></tr></tbody></table></div>
 </section>
 <section class="mod">
-  <header class="mod-h"><span class="mod-code">M16</span>
+  <header class="mod-h"><span class="mod-code">M20</span>
     <div class="mod-t"><h3>Gestione progetto e rilascio</h3><p>Coordinamento, documentazione e messa in produzione.</p></div>
     <div class="mod-tot"><b>130 h</b><span>€ 3.250</span></div></header>
   <div class="tw"><table class="items">
@@ -448,10 +481,10 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 
   <section class="s pad">
     <div class="s-h"><span class="n">06</span><h2>Cronoprogramma</h2></div>
-    <p class="lead">Durata stimata di 8 mesi con due sviluppatori. Il motore voce parte subito dopo le fondamenta perché è la parte più incerta; consumi e prenotazioni partono quando l'agente è stabile.</p>
+    <p class="lead">Durata stimata di 9 mesi con due sviluppatori. Il motore voce parte subito dopo le fondamenta perché è la parte più incerta; prenotazioni, calendario, promemoria, consumi e fatturazione partono quando l'agente è stabile.</p>
     <div class="gw"><div class="gantt">
-      <div></div><div class="gmonths"><div class="gm">M1</div><div class="gm">M2</div><div class="gm">M3</div><div class="gm">M4</div><div class="gm">M5</div><div class="gm">M6</div><div class="gm">M7</div><div class="gm">M8</div></div>
-      <div class="gl"><b>Fondamenta</b><span>M01 · M02 · 300 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:1 / 3"></div></div><div class="gl"><b>Voce</b><span>M03 · M04 · M05 · 510 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:2 / 6"></div></div><div class="gl"><b>Agente e chat</b><span>M06 · M07 · 350 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:3 / 7"></div></div><div class="gl"><b>Prenotazioni</b><span>M08 · 220 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:4 / 7"></div></div><div class="gl"><b>Consumi</b><span>M09 · 220 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:4 / 8"></div></div><div class="gl"><b>Pannelli</b><span>M10 · M11 · 280 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:5 / 9"></div></div><div class="gl"><b>Scala</b><span>M12 · M13 · M14 · 230 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:6 / 9"></div></div><div class="gl"><b>Rilascio</b><span>M15 · M16 · 290 h</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:1 / 9"></div></div>
+      <div></div><div class="gmonths"><div class="gm">M1</div><div class="gm">M2</div><div class="gm">M3</div><div class="gm">M4</div><div class="gm">M5</div><div class="gm">M6</div><div class="gm">M7</div><div class="gm">M8</div><div class="gm">M9</div></div>
+      <div class="gl"><b>Fondamenta</b><span>M01 · M02 · 300 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:1 / 3"></div></div><div class="gl"><b>Voce</b><span>M03 · M04 · M05 · 510 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:2 / 6"></div></div><div class="gl"><b>Agente e chat</b><span>M06 · M07 · 350 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:3 / 7"></div></div><div class="gl"><b>Prenotazioni e calendario</b><span>M08 · M09 · 330 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:4 / 7"></div></div><div class="gl"><b>Messaggi e lingue</b><span>M10 · M13 · 180 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:5 / 8"></div></div><div class="gl"><b>Consumi e fatturazione</b><span>M11 · M12 · 330 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:5 / 9"></div></div><div class="gl"><b>Pannelli</b><span>M14 · M15 · 280 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:6 / 10"></div></div><div class="gl"><b>Scala</b><span>M16 · M17 · M18 · 230 h</span></div><div class="gtrack"><div class="gbar" style="grid-column:7 / 10"></div></div><div class="gl"><b>Rilascio</b><span>M19 · M20 · 310 h</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:1 / 10"></div></div>
     </div></div>
   </section>
 
@@ -465,6 +498,9 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
         <tr><td>Chat (modello linguistico)</td><td class="dim">A consumo, per conversazione</td><td class="num">€ 0,002–0,01/chat</td></tr>
         <tr><td>Numeri telefonici</td><td class="dim">Canone per numero</td><td class="num">€ 1–5/mese</td></tr>
         <tr><td>Infrastruttura Cloudflare e Supabase</td><td class="dim">Mensile, cresce con i clienti: da avvio a circa 100 aziende</td><td class="num">€ 35–300/mese</td></tr>
+        <tr><td>Promemoria WhatsApp</td><td class="dim">A consumo, per messaggio di servizio inviato (listino Meta)</td><td class="num">€ 0,02–0,05/messaggio</td></tr>
+        <tr><td>Incassi con Stripe</td><td class="dim">Commissione per addebito: SEPA o carta</td><td class="num">€ 0,35–1,5% + € 0,25</td></tr>
+        <tr><td>Intermediario per la fattura elettronica</td><td class="dim">Canone annuo o costo per fattura, secondo il fornitore scelto</td><td class="num">€ 50–300/anno</td></tr>
         <tr><td>SMS ed e-mail</td><td class="dim">A consumo</td><td class="num">secondo listino</td></tr>
       </tbody>
     </table></div>
@@ -476,8 +512,8 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <p class="lead">Quotati a parte a listino, sviluppati sulla piattaforma come moduli aggiuntivi senza modifiche al nucleo.</p>
     <div class="tw" style="margin-top:16px"><table>
       <thead><tr><th>Cod.</th><th>Modulo</th><th>Contenuto</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
-      <tbody><tr><td class="code">O1</td><td>WhatsApp Business</td><td class="dim">Lo stesso agente su WhatsApp, con misurazione e quote dedicate</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O2</td><td>Chiamate in uscita</td><td class="dim">Richiami, promemoria vocali, conferme di appuntamento</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O3</td><td>Integrazione CRM</td><td class="dim">HubSpot e Pipedrive: scheda contatto, creazione lead e attività</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td class="code">O4</td><td>Raccolta e qualificazione lead</td><td class="dim">Domande guidate, punteggio, invio al commerciale</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td class="code">O5</td><td>Ordini per la ristorazione</td><td class="dim">Menu, ordini da asporto e consegna via voce e chat</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O6</td><td>Fatturazione automatica dei consumi</td><td class="dim">Stripe: canoni, eccedenze addebitate, area fatture del cliente</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">O7</td><td>Multilingua</td><td class="dim">Agente con riconoscimento della lingua, interfacce in quattro lingue</td><td class="num">80</td><td class="num">€ 2.000</td></tr><tr><td class="code">O8</td><td>Rivenditori e white label</td><td class="dim">Rivenditori con propri clienti, marchio e dominio personalizzati</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td class="code">O9</td><td>Sondaggi di soddisfazione</td><td class="dim">Domande a fine chiamata o chat, statistiche</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody>
-      <tfoot><tr><td></td><td colspan="2">Totale opzionali a listino</td><td class="num">550</td><td class="num">€ 13.750</td></tr></tfoot>
+      <tbody><tr><td class="code">O1</td><td>Agente conversazionale su WhatsApp</td><td class="dim">L&#x27;agente risponde e prenota anche su WhatsApp; il canale è già attivo grazie a M10</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td class="code">O2</td><td>Chiamate in uscita</td><td class="dim">Richiami, promemoria vocali, conferme di appuntamento</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O3</td><td>Integrazione CRM</td><td class="dim">HubSpot e Pipedrive: scheda contatto, creazione lead e attività</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td class="code">O4</td><td>Raccolta e qualificazione lead</td><td class="dim">Domande guidate, punteggio, invio al commerciale</td><td class="num">40</td><td class="num">€ 1.000</td></tr><tr><td class="code">O5</td><td>Ordini per la ristorazione</td><td class="dim">Menu, ordini da asporto e consegna via voce e chat</td><td class="num">60</td><td class="num">€ 1.500</td></tr><tr><td class="code">O6</td><td>Rivenditori e white label</td><td class="dim">Rivenditori con propri clienti, marchio e dominio personalizzati</td><td class="num">70</td><td class="num">€ 1.750</td></tr><tr><td class="code">O7</td><td>Sondaggi di soddisfazione</td><td class="dim">Domande a fine chiamata o chat, statistiche</td><td class="num">30</td><td class="num">€ 750</td></tr></tbody>
+      <tfoot><tr><td></td><td colspan="2">Totale opzionali a listino</td><td class="num">370</td><td class="num">€ 9.250</td></tr></tfoot>
     </table></div>
   </section>
 
@@ -497,10 +533,10 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <div>
         <h3>Condizioni</h3>
         <ul class="clean">
-          <li>Prezzo a corpo di € 48.000 per il perimetro descritto</li>
+          <li>Prezzo a corpo di € 56.400 per il perimetro descritto</li>
           <li>Modifiche di perimetro quotate a € 25/h, previa approvazione</li>
           <li>Correzione dei difetti inclusa per 60 giorni dalla messa in produzione</li>
-          <li>Manutenzione correttiva e adeguativa: 10% annuo, € 4.800/anno</li>
+          <li>Manutenzione correttiva e adeguativa: 10% annuo, € 5.640/anno</li>
           <li>Codice, account e numeri intestati al committente dal primo giorno</li>
           <li>Offerta valida 90 giorni dalla data del documento</li>
         </ul>
