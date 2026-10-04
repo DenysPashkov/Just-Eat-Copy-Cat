@@ -178,14 +178,14 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 
   <div class="price">
     <div class="calc pad">
-      <div class="row"><span>Versione 1 (WP0–WP12): 471 gg × € 200</span><span class="num">€ 94.200</span></div>
-      <div class="row disc"><span>Sconto commerciale (20%)</span><span class="num">−€ 18.840</span></div>
-      <div class="row tot"><span>Totale Versione 1</span><span class="num">€ 75.360</span></div>
+      <div class="row"><span>Versione 1 (WP0–WP12): 481 gg × € 200</span><span class="num">€ 96.200</span></div>
+      <div class="row disc"><span>Sconto commerciale (20%)</span><span class="num">−€ 19.240</span></div>
+      <div class="row tot"><span>Totale Versione 1</span><span class="num">€ 76.960</span></div>
       <small>Importi al netto di IVA. Una giornata-persona = 8 ore. Opzionali e canoni a parte (§ 08–09).</small>
     </div>
     <div class="facts pad">
-      <div><span class="lbl">Giornate-persona</span><b>471</b></div>
-      <div><span class="lbl">Ore</span><b>3.768</b></div>
+      <div><span class="lbl">Giornate-persona</span><b>481</b></div>
+      <div><span class="lbl">Ore</span><b>3.848</b></div>
       <div><span class="lbl">Rilascio pilota</span><b>10<small>mesi</small></b></div>
       <div><span class="lbl">Tariffa effettiva</span><b>€ 160<small>/gg</small></b></div>
     </div>
@@ -194,47 +194,65 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
   <!-- 01 -->
   <section class="s pad">
     <div class="s-h"><span class="n">01</span><h2>Sintesi della proposta</h2></div>
-    <p class="lead">Proponiamo un <b>monolite modulare in TypeScript su PostgreSQL</b>, con isolamento dei clienti garantito dalla Row Level Security della base dati, moduli con schema proprio e confini verificati in integrazione continua, API REST come unica porta d'accesso (l'interfaccia web ne è un client) ed eventi di dominio persistiti nella stessa transazione della scrittura.</p>
-    <p class="lead">La stima è di <b>471 giornate-persona</b> per WP0–WP12, con una forchetta di 430–560 giornate che si chiude alla fine della fase di analisi. Il piano porta il pilota in produzione il <b>6 settembre 2027</b>, con consegne incrementali in ambiente di prova a ogni milestone ed esercizio assistito fino al 5 novembre 2027.</p>
+    <p class="lead">Proponiamo un <b>monolite modulare in TypeScript su PostgreSQL</b>, eseguito inizialmente su <b>Cloudflare Workers con base dati Supabase</b> e già predisposto per essere spostato, senza riscritture, su un server in affitto o presso un cliente quando diventa più conveniente. Isolamento dei clienti garantito dalla Row Level Security della base dati, moduli con schema proprio e confini verificati in integrazione continua, API REST come unica porta d'accesso (l'interfaccia web ne è un client) ed eventi di dominio persistiti nella stessa transazione della scrittura.</p>
+    <p class="lead">La stima è di <b>481 giornate-persona</b> per WP0–WP12, con una forchetta di 440–570 giornate che si chiude alla fine della fase di analisi. Il piano porta il pilota in produzione il <b>6 settembre 2027</b>, con consegne incrementali in ambiente di prova a ogni milestone ed esercizio assistito fino al 5 novembre 2027.</p>
     <p class="lead">Il modulo di riferimento O4 (provvigioni agenti) è stimato in <b>12 giornate</b>: è la nostra misura del costo di un modulo tipico una volta che la piattaforma esiste.</p>
     <div class="flow">
-      <div class="step"><b>Interfaccia web</b><span>React, design system proprio, client della stessa API pubblica</span></div>
-      <div class="step"><b>API e permessi</b><span>REST + OpenAPI 3, chiavi per cliente con ambiti, idempotenza</span></div>
-      <div class="step"><b>Nucleo e moduli</b><span>Moduli con schema, interfacce ed eventi propri; nessun accesso incrociato</span></div>
-      <div class="step"><b>Dati ed eventi</b><span>PostgreSQL con RLS, registro operazioni, outbox, webhook, S3</span></div>
+      <div class="step"><b>Interfaccia web</b><span>React, design system proprio, client della stessa API pubblica; file statici su Cloudflare</span></div>
+      <div class="step"><b>API e permessi</b><span>Hono + OpenAPI 3 su Cloudflare Workers (o Node.js in container), chiavi per cliente, idempotenza</span></div>
+      <div class="step"><b>Nucleo e moduli</b><span>Moduli con schema, interfacce ed eventi propri; servizi esterni solo tramite adattatori</span></div>
+      <div class="step"><b>Dati ed eventi</b><span>PostgreSQL su Supabase con RLS, registro operazioni, outbox, webhook; file su R2 (API S3)</span></div>
     </div>
   </section>
 
   <!-- 02 -->
   <section class="s pad">
     <div class="s-h"><span class="n">02</span><h2>Architettura e stack</h2></div>
-    <p class="lead">Un solo linguaggio dal back-end al front-end, componenti open source diffusi con licenza permissiva (MIT, Apache 2.0, BSD, PostgreSQL). Nessuna dipendenza AGPL o GPL nel prodotto; l'inventario delle licenze è generato in integrazione continua e blocca il rilascio se compare una licenza non approvata.</p>
+    <p class="lead">Un solo linguaggio dal back-end al front-end. Cloudflare e Supabase sono usati come infrastruttura, sempre dietro adattatori: nessun loro SDK entra nel nucleo, come chiede P6. Componenti open source diffusi con licenza permissiva (MIT, Apache 2.0, BSD, PostgreSQL). Nessuna dipendenza AGPL o GPL nel prodotto; l'inventario delle licenze è generato in integrazione continua e blocca il rilascio se compare una licenza non approvata.</p>
     <div class="tw" style="margin-top:16px"><table>
       <thead><tr><th>Livello</th><th>Scelta</th><th>Motivazione</th></tr></thead>
       <tbody>
-        <tr><td>Back-end</td><td>Node.js LTS, TypeScript, NestJS</td><td class="dim">Moduli e iniezione delle dipendenze nativi, ampia base di sviluppatori in Italia: un altro team lo prende in mano senza competenze rare</td></tr>
-        <tr><td>Base dati</td><td>PostgreSQL 16+, Kysely, migrazioni versionate</td><td class="dim">Query tipizzate senza la magia di un ORM pesante; RLS, JSONB, ricerca testuale e trigrammi nativi</td></tr>
-        <tr><td>Schemi e API</td><td>Zod → OpenAPI 3, Scalar per la documentazione</td><td class="dim">Un'unica definizione genera validazione, documentazione, client tipizzato e descrizione delle operazioni per gli assistenti</td></tr>
-        <tr><td>Lavori asincroni</td><td>pg-boss su PostgreSQL</td><td class="dim">Code, webhook, invii SdI e PDF senza aggiungere Redis o broker: un servizio in meno da installare presso il cliente</td></tr>
-        <tr><td>Front-end</td><td>React, Vite, TanStack Query e Table, Radix UI</td><td class="dim">Tabelle dense e navigabili da tastiera, componenti accessibili di base su cui costruire il design system</td></tr>
-        <tr><td>Documenti</td><td>Modelli HTML + Gotenberg (Chromium) per i PDF</td><td class="dim">Modelli per cliente modificabili senza strumenti proprietari; motore dietro adattatore</td></tr>
-        <tr><td>File</td><td>API S3 (object storage UE in cloud; SeaweedFS in installazione locale)</td><td class="dim">SeaweedFS è Apache 2.0, a differenza di MinIO (AGPL)</td></tr>
-        <tr><td>Esercizio</td><td>Docker, un file Compose, Caddy, OpenTelemetry, Prometheus, GlitchTip</td><td class="dim">Si avvia su qualunque server Linux; nessun servizio esclusivo di un cloud nel nucleo</td></tr>
-        <tr><td>Qualità</td><td>Vitest, Testcontainers, Playwright, dependency-cruiser, GitHub Actions</td><td class="dim">Test su PostgreSQL vero; i confini fra moduli sono regole che fanno fallire la build</td></tr>
+        <tr><td>Back-end</td><td>TypeScript, Hono</td><td class="dim">Lo stesso codice gira su Cloudflare Workers e su Node.js in container: è ciò che rende possibile il trasloco senza riscritture. Framework diffuso, MIT, senza dipendenze dal fornitore</td></tr>
+        <tr><td>Base dati</td><td>PostgreSQL 15+ (Supabase gestito), Kysely, migrazioni versionate</td><td class="dim">Usiamo Supabase come PostgreSQL gestito, con backup e PITR. Il nucleo non usa PostgREST, supabase-js né Edge Functions: solo SQL standard, RLS, JSONB e trigrammi, che funzionano identici su qualunque PostgreSQL</td></tr>
+        <tr><td>Connessione</td><td>Cloudflare Hyperdrive ↔ pool diretto</td><td class="dim">Hyperdrive mantiene le connessioni dai Workers a Supabase; su server l'applicazione apre un pool normale. Cambia solo la stringa di connessione</td></tr>
+        <tr><td>Autenticazione</td><td>Better Auth nell'applicazione (MIT)</td><td class="dim">Utenti, sessioni e secondo fattore nelle nostre tabelle: si spostano con la base dati. Non usiamo Supabase Auth per non legare gli utenti al servizio</td></tr>
+        <tr><td>Schemi e API</td><td>Zod → OpenAPI 3 (@hono/zod-openapi), Scalar per la documentazione</td><td class="dim">Un'unica definizione genera validazione, documentazione, client tipizzato e descrizione delle operazioni per gli assistenti</td></tr>
+        <tr><td>Lavori asincroni</td><td>Adattatore: Cloudflare Queues e Cron Triggers ↔ pg-boss</td><td class="dim">Webhook, invii SdI, importazioni e PDF passano da un'interfaccia interna; cambia l'implementazione, non i moduli</td></tr>
+        <tr><td>Front-end</td><td>React, Vite, TanStack Query e Table, Radix UI</td><td class="dim">File statici: serviti da Cloudflare oggi, da Caddy domani. Tabelle dense e navigabili da tastiera</td></tr>
+        <tr><td>Documenti</td><td>Modelli HTML; PDF con Cloudflare Browser Rendering ↔ Gotenberg</td><td class="dim">Stessi modelli in entrambi i casi, motore dietro adattatore</td></tr>
+        <tr><td>File</td><td>API S3: Cloudflare R2 (giurisdizione UE) ↔ SeaweedFS o object storage del provider</td><td class="dim">R2 non ha costi di traffico in uscita; SeaweedFS è Apache 2.0, a differenza di MinIO (AGPL)</td></tr>
+        <tr><td>Esercizio</td><td>Wrangler; Docker e un file Compose; OpenTelemetry, Sentry (regione UE)</td><td class="dim">Due bersagli di rilascio dallo stesso repository, entrambi provati in integrazione continua</td></tr>
+        <tr><td>Qualità</td><td>Vitest, Testcontainers, Playwright, dependency-cruiser, GitHub Actions</td><td class="dim">Test su PostgreSQL vero; i confini fra moduli e il divieto di importare SDK di fornitori nel nucleo sono regole che fanno fallire la build</td></tr>
       </tbody>
     </table></div>
+
+    <h3 class="sub3">Due modalità di esercizio, un solo codice</h3>
+    <p class="lead">Si parte su servizi gestiti, che azzerano l'amministrazione dei server mentre i clienti sono pochi. Quando volumi o costi lo rendono conveniente, la stessa versione del prodotto si sposta su un server in affitto in UE; la stessa immagine serve anche per l'installazione presso un cliente.</p>
+    <div class="tw" style="margin-top:14px"><table>
+      <thead><tr><th>Componente</th><th>Fase 1 — Cloudflare + Supabase</th><th>Fase 2 — server in affitto o presso il cliente</th></tr></thead>
+      <tbody>
+        <tr><td>Applicazione e API</td><td class="dim">Cloudflare Workers</td><td class="dim">Container Node.js</td></tr>
+        <tr><td>Interfaccia web</td><td class="dim">Cloudflare (static assets)</td><td class="dim">Caddy, con certificati automatici</td></tr>
+        <tr><td>Base dati</td><td class="dim">Supabase, regione UE, PITR</td><td class="dim">PostgreSQL in container o gestito dal provider, pgBackRest</td></tr>
+        <tr><td>File</td><td class="dim">Cloudflare R2, giurisdizione UE</td><td class="dim">SeaweedFS o object storage S3 del provider</td></tr>
+        <tr><td>Code e lavori pianificati</td><td class="dim">Cloudflare Queues, Cron Triggers</td><td class="dim">pg-boss in un processo worker</td></tr>
+        <tr><td>PDF</td><td class="dim">Cloudflare Browser Rendering</td><td class="dim">Gotenberg in container</td></tr>
+        <tr><td>Backup</td><td class="dim">PITR Supabase + dump giornaliero cifrato su R2, 30 giorni</td><td class="dim">WAL continuo e backup giornalieri, 30 giorni</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Trasloco:</b> si crea il server con il file Compose, si ripristina il dump della base dati, si copiano i file da R2 con rclone, si sposta il DNS. Interruzione prevista: una finestra fuori orario di 2–4 ore. La procedura è documentata e provata una volta durante il progetto (WP11), così il giorno in cui servirà non sarà la prima volta.</p>
 
     <h3 class="sub3">Risposta ai principi del § 3</h3>
     <div class="tw"><table class="princ">
       <thead><tr><th>Cod.</th><th>Principio</th><th>Come lo soddisfiamo</th></tr></thead>
       <tbody>
-        <tr><td>P1</td><td>Multi-cliente</td><td>Ogni tabella con dati di cliente porta <span class="mono">tenant_id</span> e una politica RLS; l'applicazione si connette con un ruolo senza privilegi di bypass e imposta il cliente a ogni transazione. Un test automatico verifica che nessuna tabella resti senza politica. La modalità mono-cliente è la stessa immagine con un solo tenant. Moduli, parametri, aspetto e lessico sono configurazione per cliente.</td></tr>
+        <tr><td>P1</td><td>Multi-cliente</td><td>Ogni tabella con dati di cliente porta <span class="mono">tenant_id</span> e una politica RLS; l'applicazione si connette con un ruolo senza privilegi di bypass e imposta il cliente a ogni transazione. Un test automatico verifica che nessuna tabella resti senza politica. L'isolamento vive in PostgreSQL, quindi resta identico su Supabase e su qualunque server. La modalità mono-cliente è la stessa immagine Docker con un solo tenant. Moduli, parametri, aspetto e lessico sono configurazione per cliente.</td></tr>
         <tr><td>P2</td><td>Monolite modulare</td><td>Un modulo = una cartella con il proprio schema PostgreSQL, un'interfaccia pubblica (comandi, interrogazioni), eventi emessi e un manifesto con dipendenze e permessi. Le regole di dependency-cruiser e i permessi sugli schemi impediscono letture incrociate e cicli; la build fallisce se un confine viene violato. Disattivare un modulo per un cliente nasconde rotte, menu ed eventi senza toccare gli altri.</td></tr>
         <tr><td>P3</td><td>Estensibilità come dato</td><td>Definizioni di campi aggiuntivi (tipo, obbligatorietà, elenco, visibilità) salvate per cliente e applicate a modello, API, moduli di inserimento, filtri ed esportazioni; valori in JSONB indicizzato. Stati con transizioni configurabili, tipi di documento, numeratori, etichette. Regole semplici espresse in JSON Logic (linguaggio dichiarativo, non eseguibile arbitrariamente). Ogni modifica è versionata con ritorno alla versione precedente.</td></tr>
         <tr><td>P4</td><td>API prima della UI</td><td>Il front-end usa solo l'API pubblica. Schemi in Zod da cui derivano validazione, OpenAPI 3 e descrizione delle operazioni. Eventi di dominio scritti in una tabella outbox nella stessa transazione e consegnati via webhook firmati con riconsegna.</td></tr>
         <tr><td>P5</td><td>Tracciabilità</td><td>Registro operazioni con attore (utente, integrazione, sistema), istante, comando, stato prima e dopo, nella stessa transazione. Intestazione <span class="mono">Idempotency-Key</span> obbligatoria sulle scritture via API; concorrenza ottimistica con numero di versione (409 in caso di conflitto). Numeratori fiscali con riga di contatore bloccata nella transazione di emissione: nessun salto, nessun duplicato.</td></tr>
-        <tr><td>P6</td><td>Installabile ovunque</td><td>Immagini container, un file Compose per l'intera piattaforma, PostgreSQL e storage S3. Backup con pgBackRest (WAL continuo per RPO 1 h) e prova di ripristino automatica mensile con esito registrato.</td></tr>
-        <tr><td>P7</td><td>Adattatori</td><td>Interfacce interne per SdI e conservazione, posta, PDF, firma, pagamenti, storage. Ogni adattatore ha un'implementazione di prova usata nei test; cambiare fornitore significa scrivere un adattatore e cambiare configurazione.</td></tr>
+        <tr><td>P6</td><td>Installabile ovunque</td><td>Due bersagli dallo stesso codice: Cloudflare Workers + Supabase per l'istanza condivisa iniziale; immagine Docker e un file Compose (applicazione, worker, PostgreSQL, storage S3, PDF, Caddy) per server in affitto o installazione presso il cliente. La CI esegue i test su entrambi. Nel nucleo solo PostgreSQL standard e API S3; i servizi Cloudflare stanno dietro adattatori. Backup: PITR di Supabase più dump giornaliero cifrato su R2 (30 giorni); su server WAL continuo con pgBackRest. Prova di ripristino mensile con esito registrato.</td></tr>
+        <tr><td>P7</td><td>Adattatori</td><td>Interfacce interne per SdI e conservazione, posta, PDF, firma, pagamenti, storage, code e lavori pianificati. Ogni adattatore ha un'implementazione di prova usata nei test; cambiare fornitore significa scrivere un adattatore e cambiare configurazione.</td></tr>
         <tr><td>P8</td><td>Esperienza d'uso</td><td>Una UX/UI designer dedicata cura prototipo (WP0), design system e prove con utenti (WP10). I cinque compiti chiave sono provati con tre utenti del pilota sul prototipo e di nuovo prima del rilascio, con tempi obiettivo fissati in WP0.</td></tr>
         <tr><td>P9</td><td>Qualità verificabile</td><td>Scenari di accettazione scritti in WP0 per ogni pacchetto e trasformati in test di flusso Playwright; test di integrazione su PostgreSQL reale; tre ambienti separati; dati di esempio generati da script.</td></tr>
         <tr><td>P10</td><td>Nessun vincolo di uscita</td><td>Repository, CI, registro container, domini e account dei fornitori intestati al Committente dal primo giorno; noi operiamo come utenti invitati. Decisioni di architettura in ADR, guida di esercizio e d'uso, inventario licenze, due settimane di affiancamento.</td></tr>
@@ -261,7 +279,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <thead><tr><th>WP</th><th>Pacchetto</th><th>Milestone</th><th class="num">Giornate</th><th class="num">Ore</th><th class="num">Importo</th></tr></thead>
       <tbody>
         <tr><td class="code">WP0</td><td>Analisi, architettura e prototipo</td><td class="dim">M0</td><td class="num">32</td><td class="num">256</td><td class="num">€ 6.400</td></tr>
-        <tr><td class="code">WP1</td><td>Piattaforma</td><td class="dim">M1</td><td class="num">105</td><td class="num">840</td><td class="num">€ 21.000</td></tr>
+        <tr><td class="code">WP1</td><td>Piattaforma</td><td class="dim">M1</td><td class="num">111</td><td class="num">888</td><td class="num">€ 22.200</td></tr>
         <tr><td class="code">WP2</td><td>Anagrafiche</td><td class="dim">M1</td><td class="num">18</td><td class="num">144</td><td class="num">€ 3.600</td></tr>
         <tr><td class="code">WP3</td><td>Articoli, listini e condizioni commerciali</td><td class="dim">M1</td><td class="num">30</td><td class="num">240</td><td class="num">€ 6.000</td></tr>
         <tr><td class="code">WP4</td><td>Magazzino e lotti</td><td class="dim">M2</td><td class="num">32</td><td class="num">256</td><td class="num">€ 6.400</td></tr>
@@ -271,21 +289,21 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
         <tr><td class="code">WP8</td><td>Reportistica e cruscotti</td><td class="dim">M4</td><td class="num">20</td><td class="num">160</td><td class="num">€ 4.000</td></tr>
         <tr><td class="code">WP9</td><td>API, eventi e integrazioni</td><td class="dim">M4</td><td class="num">16</td><td class="num">128</td><td class="num">€ 3.200</td></tr>
         <tr><td class="code">WP10</td><td>Esperienza d'uso e design system</td><td class="dim">M0–M4</td><td class="num">38</td><td class="num">304</td><td class="num">€ 7.600</td></tr>
-        <tr><td class="code">WP11</td><td>Qualità, sicurezza, documentazione, operatività</td><td class="dim">M1–M5</td><td class="num">42</td><td class="num">336</td><td class="num">€ 8.400</td></tr>
+        <tr><td class="code">WP11</td><td>Qualità, sicurezza, documentazione, operatività</td><td class="dim">M1–M5</td><td class="num">46</td><td class="num">368</td><td class="num">€ 9.200</td></tr>
         <tr><td class="code">WP12</td><td>Migrazione dei dati e avviamento del pilota</td><td class="dim">M1–M5</td><td class="num">32</td><td class="num">256</td><td class="num">€ 6.400</td></tr>
       </tbody>
       <tfoot>
-        <tr><td></td><td colspan="2">Totale a listino</td><td class="num">471</td><td class="num">3.768</td><td class="num">€ 94.200</td></tr>
-        <tr class="disc"><td></td><td colspan="4">Sconto commerciale (20%)</td><td class="num">−€ 18.840</td></tr>
-        <tr class="grand"><td></td><td colspan="4">Totale Versione 1</td><td class="num">€ 75.360</td></tr>
+        <tr><td></td><td colspan="2">Totale a listino</td><td class="num">481</td><td class="num">3.848</td><td class="num">€ 96.200</td></tr>
+        <tr class="disc"><td></td><td colspan="4">Sconto commerciale (20%)</td><td class="num">−€ 19.240</td></tr>
+        <tr class="grand"><td></td><td colspan="4">Totale Versione 1</td><td class="num">€ 76.960</td></tr>
       </tfoot>
     </table></div>
     <p class="note">Coordinamento, allineamenti con il Committente e revisione del codice sono inclusi nelle stime di ciascun pacchetto (circa l'8%). I test unitari e di integrazione di ogni funzione sono stimati nel pacchetto che la realizza; WP11 contiene l'infrastruttura di qualità, i test trasversali e la sicurezza.</p>
 
     <div class="range">
-      <div><span class="lbl">Minimo</span><span class="v">430 gg · € 68.800</span></div>
-      <div><span class="lbl">Stima</span><span class="v hi">471 gg · € 75.360</span></div>
-      <div><span class="lbl">Massimo</span><span class="v">560 gg · € 89.600</span></div>
+      <div><span class="lbl">Minimo</span><span class="v">440 gg · € 70.400</span></div>
+      <div><span class="lbl">Stima</span><span class="v hi">481 gg · € 76.960</span></div>
+      <div><span class="lbl">Massimo</span><span class="v">570 gg · € 91.200</span></div>
       <p>Importi scontati. Le voci più incerte sono le regole configurabili (WP1), il motore prezzi del pilota (WP3), l'intermediario SdI (WP7) e la qualità dei dati da migrare (WP12). Alla fine di WP0 la forchetta si chiude su un prezzo a corpo per WP1–WP12.</p>
     </div>
   </section>
@@ -315,7 +333,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 <section class="mod">
   <header class="mod-h"><span class="mod-code">WP1</span>
     <div class="mod-t"><h3>Piattaforma</h3><p>Le fondamenta: multi-tenancy, sicurezza, configurazione, documenti, eventi. È il pacchetto che rende economici i clienti successivi.</p></div>
-    <div class="mod-tot"><b>105 gg</b><span>€ 21.000</span></div></header>
+    <div class="mod-tot"><b>111 gg</b><span>€ 22.200</span></div></header>
   <div class="tw"><table class="items">
     <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
     <tbody>
@@ -333,8 +351,9 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <tr><td>Registro degli eventi (outbox) e consegna webhook</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
       <tr><td>Chiavi API per cliente con ambiti</td><td class="num">4</td><td class="num">€ 800</td></tr>
       <tr><td>Ricerca globale (testo completo e trigrammi)</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Adattatori di esecuzione per i due bersagli: code e lavori pianificati (Queues e Cron ↔ pg-boss), PDF (Browser Rendering ↔ Gotenberg), connessione (Hyperdrive ↔ pool), configurazione per ambiente</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
     </tbody></table></div>
-  <div class="mod-f"><div><b>Assunzioni</b>Regole semplici = condizioni su campi dello stesso documento, senza script; layout di stampa alternativi predisposti da noi, non da un editor visuale.</div><div><b>Rischi</b>Richiesta di regole più espressive (calcoli fra documenti, flussi approvativi) o di un editor grafico dei modelli: sarebbero un generatore di applicazioni, escluso dalla RDO.</div></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Regole semplici = condizioni su campi dello stesso documento, senza script; layout di stampa alternativi predisposti da noi, non da un editor visuale.</div><div><b>Rischi</b>Richiesta di regole più espressive (calcoli fra documenti, flussi approvativi) o di un editor grafico dei modelli: sarebbero un generatore di applicazioni, escluso dalla RDO. Limiti di CPU e memoria dei Workers su importazioni molto grandi: elaborazione a blocchi in coda.</div></div>
 </section>
 
 <section class="mod">
@@ -493,7 +512,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
 <section class="mod">
   <header class="mod-h"><span class="mod-code">WP11</span>
     <div class="mod-t"><h3>Qualità, sicurezza, documentazione, operatività</h3><p>Ciò che permette a un altro team di prendere in mano il prodotto in due settimane.</p></div>
-    <div class="mod-tot"><b>42 gg</b><span>€ 8.400</span></div></header>
+    <div class="mod-tot"><b>46 gg</b><span>€ 9.200</span></div></header>
   <div class="tw"><table class="items">
     <thead><tr><th>Attività</th><th class="num">Giornate</th><th class="num">Importo</th></tr></thead>
     <tbody>
@@ -501,7 +520,8 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <tr><td>Scenari di accettazione eseguibili per pacchetto</td><td class="num">4</td><td class="num">€ 800</td></tr>
       <tr><td>Sicurezza OWASP ASVS L2: revisione, cifratura, segreti, limitazione richieste, registrazione accessi</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
       <tr><td>Registri strutturati, metriche, tracciamento errori</td><td class="num">3</td><td class="num">€ 600</td></tr>
-      <tr><td>Ambienti di sviluppo, prova e produzione; backup, ripristino provato, ritorno alla versione precedente</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
+      <tr><td>Ambienti di sviluppo, prova e produzione su Cloudflare e Supabase; PITR, dump giornaliero su R2, ripristino provato, ritorno alla versione precedente</td><td class="num">4</td><td class="num">€ 800</td></tr>
+      <tr><td>Bersaglio server: immagine Docker, file Compose completo, CI su entrambi i bersagli, guida e prova di trasloco su un server in affitto</td><td class="num">6</td><td class="num">€ 1.200</td></tr>
       <tr><td>Test di carico sui requisiti del § 5 (100 utenti, 100.000 articoli, 10 milioni di movimenti)</td><td class="num">4</td><td class="num">€ 800</td></tr>
       <tr><td>Documentazione di architettura, esercizio e uso; inventario delle dipendenze con licenze</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
       <tr><td>Affiancamento al passaggio di consegne (due settimane, a tempo parziale)</td><td class="num">4</td><td class="num">€ 800</td></tr>
@@ -561,13 +581,13 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
     <div class="gw"><div class="gantt">
       <div></div><div class="gmonths"><div class="gm">nov</div><div class="gm">dic</div><div class="gm">gen</div><div class="gm">feb</div><div class="gm">mar</div><div class="gm">apr</div><div class="gm">mag</div><div class="gm">giu</div><div class="gm">lug</div><div class="gm">ago</div><div class="gm">set</div><div class="gm">ott</div><div class="gm">nov</div></div>
       <div class="gl"><b>Analisi e prototipo</b><span>WP0 · 32 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:1 / 2"></div></div>
-      <div class="gl"><b>Piattaforma</b><span>WP1 · 105 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:2 / 5"></div></div>
+      <div class="gl"><b>Piattaforma</b><span>WP1 · 111 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:2 / 5"></div></div>
       <div class="gl"><b>Anagrafiche e articoli</b><span>WP2 · WP3 · 48 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:3 / 5"></div></div>
       <div class="gl"><b>Magazzino e vendite</b><span>WP4 · WP5 · 78 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:5 / 7"></div></div>
       <div class="gl"><b>Acquisti, FE, incassi</b><span>WP6 · WP7 · 60 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:7 / 9"></div></div>
       <div class="gl"><b>Report e API</b><span>WP8 · WP9 · 36 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:9 / 10"></div></div>
       <div class="gl"><b>UX e design system</b><span>WP10 · 38 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:1 / 10"></div></div>
-      <div class="gl"><b>Qualità e operatività</b><span>WP11 · 42 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:2 / 12"></div></div>
+      <div class="gl"><b>Qualità e operatività</b><span>WP11 · 46 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:2 / 12"></div></div>
       <div class="gl"><b>Migrazione e avviamento</b><span>WP12 · 32 gg</span></div><div class="gtrack"><div class="gbar soft" style="grid-column:4 / 10"></div><div class="gbar" style="grid-column:10 / 14"></div></div>
       <div class="gl"><b>Milestone</b><span>consegne</span></div><div class="gtrack" style="height:24px"><div class="gms" style="grid-column:1 / 2">M0</div><div class="gms" style="grid-column:4 / 5">M1</div><div class="gms" style="grid-column:6 / 7">M2</div><div class="gms" style="grid-column:8 / 9">M3</div><div class="gms" style="grid-column:9 / 10">M4</div><div class="gms" style="grid-column:11 / 12">M5</div></div>
     </div></div>
@@ -589,10 +609,11 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <thead><tr><th>Entro</th><th>Che cosa serve</th></tr></thead>
       <tbody>
         <tr><td class="mono">2 nov 2026</td><td>Referente con potere decisionale; organizzazione GitHub (o equivalente), CI e registro container intestati al Committente, con accessi per il team</td></tr>
+        <tr><td class="mono">30 nov 2026</td><td>Account Cloudflare (Workers Paid) e Supabase (piano Pro, regione UE) intestati al Committente, con accordi di trattamento dati e accessi per il team</td></tr>
         <tr><td class="mono">9 nov 2026</td><td>Contatto con il pilota; esempi reali di ordini, DDT, fatture, listini e condizioni; esportazione completa di prova dal gestionale attuale</td></tr>
         <tr><td class="mono">16 nov 2026</td><td>Tre utenti del pilota disponibili per la prova del prototipo (mezza giornata ciascuno); contatto con il commercialista del pilota</td></tr>
         <tr><td class="mono">27 nov 2026</td><td>Approvazione di WP0 entro cinque giorni lavorativi dalla consegna; scelta dell'intermediario SdI</td></tr>
-        <tr><td class="mono">15 gen 2027</td><td>Contratto di hosting in UE con accordo di trattamento dati; domini</td></tr>
+        <tr><td class="mono">15 gen 2027</td><td>Domini gestiti su Cloudflare; server in affitto di prova per la verifica del trasloco (può essere spento dopo la prova)</td></tr>
         <tr><td class="mono">1 mar 2027</td><td>Contratto con l'intermediario SdI e credenziali dell'ambiente di prova; specifiche CBI della banca del pilota per le RiBa</td></tr>
         <tr><td class="mono">4 giu 2027</td><td>Tracciato di esportazione validato dal commercialista</td></tr>
         <tr><td class="mono">12 lug 2027</td><td>Utenti del pilota per la seconda prova; incarico alla società della verifica di sicurezza indipendente</td></tr>
@@ -608,9 +629,9 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <thead><tr><th>Ambito</th><th>Come li verifichiamo</th></tr></thead>
       <tbody>
         <tr><td>Prestazioni e dimensioni</td><td class="dim">Paginazione e filtri lato server, indici per cliente; test di carico in M4 con 100 utenti concorrenti, catalogo da 100.000 articoli, 10 milioni di movimenti e 100 clienti generati; risultati allegati alla consegna.</td></tr>
-        <tr><td>Disponibilità e continuità</td><td class="dim">WAL continuo verso storage esterno (RPO ≤ 1 h), backup giornalieri conservati 30 giorni, prova di ripristino mensile cronometrata (RTO ≤ 4 h), procedura di ritorno alla versione precedente documentata.</td></tr>
+        <tr><td>Disponibilità e continuità</td><td class="dim">Fase 1: PITR di Supabase (RPO ≤ 1 h) e dump giornaliero cifrato su R2 conservato 30 giorni. Fase 2: WAL continuo e backup giornalieri. In entrambe prova di ripristino mensile cronometrata (RTO ≤ 4 h) e procedura di ritorno alla versione precedente documentata.</td></tr>
         <tr><td>Sicurezza</td><td class="dim">Lista di controllo ASVS L2 compilata e consegnata; TLS 1.2+, cifratura a riposo di volumi e backup, secondo fattore, segreti fuori dal codice, registrazione degli accessi.</td></tr>
-        <tr><td>Protezione dei dati</td><td class="dim">Dati e backup in UE; esportazione e anonimizzazione per interessato nei limiti degli obblighi di conservazione; documentazione a supporto del registro dei trattamenti.</td></tr>
+        <tr><td>Protezione dei dati</td><td class="dim">Dati e backup in UE: Supabase in regione europea, bucket R2 con giurisdizione UE, accordi di trattamento dati con entrambi i fornitori. Esportazione e anonimizzazione per interessato nei limiti degli obblighi di conservazione; documentazione a supporto del registro dei trattamenti.</td></tr>
         <tr><td>Compatibilità e lingua</td><td class="dim">Ultime due versioni di Chrome, Edge, Firefox e Safari; tablet da 10"; italiano con testi esternalizzati e formati italiani.</td></tr>
       </tbody>
     </table></div>
@@ -659,11 +680,13 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <thead><tr><th>Voce</th><th>Modalità</th><th class="num">Importo</th></tr></thead>
       <tbody>
         <tr><td>WP0 — Analisi, architettura e prototipo</td><td class="dim">A corpo, fatturato alla consegna di M0</td><td class="num">€ 5.120</td></tr>
-        <tr><td>WP1–WP12 — Versione 1</td><td class="dim">A corpo, confermato in M0 entro la forchetta; fatturato per milestone</td><td class="num">€ 70.240</td></tr>
+        <tr><td>WP1–WP12 — Versione 1</td><td class="dim">A corpo, confermato in M0 entro la forchetta; fatturato per milestone</td><td class="num">€ 71.840</td></tr>
         <tr><td>Tariffa per evoluzioni future (§ 6 della RDO)</td><td class="dim">Giornata-persona, € 25/h, per qualunque profilo</td><td class="num">€ 200/gg</td></tr>
         <tr><td>Manutenzione correttiva e adeguativa</td><td class="dim">Canone annuo dopo il rilascio: dipendenze, adeguamenti normativi FatturaPA, patch di sicurezza, compatibilità con i fornitori integrati; fino a 4 gg/mese</td><td class="num">€ 9.600/anno</td></tr>
         <tr><td>O9 — Hosting e gestione operativa</td><td class="dim">Aggiornamenti, monitoraggio, backup e prove di ripristino, assistenza di secondo livello; fino a 2 gg/mese</td><td class="num">€ 4.800/anno</td></tr>
-        <tr><td>Infrastruttura dell'istanza condivisa</td><td class="dim">Riaddebitata al costo, contratto intestato al Committente; stima per fino a 100 clienti su provider UE</td><td class="num">€ 2.400–4.200/anno</td></tr>
+        <tr><td>Infrastruttura — fase 1, Cloudflare + Supabase</td><td class="dim">Al costo, account intestati al Committente: Supabase Pro con capacità adeguata e PITR, Cloudflare Workers Paid, R2. Stima indicativa</td><td class="num">€ 150–250/mese</td></tr>
+        <tr><td>Infrastruttura — fase 2, server in affitto UE</td><td class="dim">Al costo: server dedicato o cloud, storage per i backup. Stima indicativa per fino a 100 clienti</td><td class="num">€ 60–150/mese</td></tr>
+        <tr><td>Trasloco dalla fase 1 alla fase 2</td><td class="dim">Esecuzione della procedura già provata in WP11, in una finestra fuori orario</td><td class="num">≈ 2 gg · € 400</td></tr>
         <tr><td>Verifica di sicurezza indipendente</td><td class="dim">Da affidare a una società terza per garantirne l'indipendenza; stima di mercato, non fatturata da noi</td><td class="num">€ 4.000–7.000</td></tr>
       </tbody>
     </table></div>
@@ -681,6 +704,8 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
           <li><b>Configurabilità che sfugge di mano.</b> Il perimetro di P3 è fissato in WP0 con esempi concreti; oltre quel perimetro si scrive un modulo, non si estende il motore.</li>
           <li><b>Intermediario SdI.</b> Scelto in WP0 dopo una prova sulla sua API; adattatore con implementazione di prova, così lo sviluppo non si blocca in attesa del contratto.</li>
           <li><b>Dati del pilota.</b> Prima migrazione di prova già in M1, per scoprire presto i problemi di qualità dei dati.</li>
+          <li><b>Dipendenza da Cloudflare e Supabase.</b> Nessun loro SDK nel nucleo, regola verificata in CI; il bersaglio server è testato a ogni rilascio e il trasloco è provato durante il progetto.</li>
+          <li><b>Elaborazione all'edge.</b> Dati e backup restano in UE, ma i Workers possono elaborare le richieste in nodi fuori UE. Se il Committente o un cliente richiede elaborazione esclusivamente in UE, quel cliente va installato in fase 2 o va attivato il servizio regionale di Cloudflare.</li>
           <li><b>Team piccolo.</b> Revisione incrociata di ogni modifica, ADR, documentazione continua e repository del Committente riducono la dipendenza da una persona.</li>
         </ul>
       </div>
