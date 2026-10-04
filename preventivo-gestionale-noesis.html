@@ -237,7 +237,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
         <tr><td>File</td><td class="dim">Cloudflare R2, giurisdizione UE</td><td class="dim">SeaweedFS o object storage S3 del provider</td></tr>
         <tr><td>Code e lavori pianificati</td><td class="dim">Cloudflare Queues, Cron Triggers</td><td class="dim">pg-boss in un processo worker</td></tr>
         <tr><td>PDF</td><td class="dim">Cloudflare Browser Rendering</td><td class="dim">Gotenberg in container</td></tr>
-        <tr><td>Backup</td><td class="dim">PITR Supabase + dump giornaliero cifrato su R2, 30 giorni</td><td class="dim">WAL continuo e backup giornalieri, 30 giorni</td></tr>
+        <tr><td>Backup</td><td class="dim">Dump orario cifrato su R2 in avvio, PITR Supabase dalla fascia Crescita; dump giornaliero conservato 30 giorni</td><td class="dim">WAL continuo e backup giornalieri, 30 giorni</td></tr>
       </tbody>
     </table></div>
     <p class="note"><b>Trasloco:</b> si crea il server con il file Compose, si ripristina il dump della base dati, si copiano i file da R2 con rclone, si sposta il DNS. Interruzione prevista: una finestra fuori orario di 2–4 ore. La procedura è documentata e provata una volta durante il progetto (WP11), così il giorno in cui servirà non sarà la prima volta.</p>
@@ -251,7 +251,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
         <tr><td>P3</td><td>Estensibilità come dato</td><td>Definizioni di campi aggiuntivi (tipo, obbligatorietà, elenco, visibilità) salvate per cliente e applicate a modello, API, moduli di inserimento, filtri ed esportazioni; valori in JSONB indicizzato. Stati con transizioni configurabili, tipi di documento, numeratori, etichette. Regole semplici espresse in JSON Logic (linguaggio dichiarativo, non eseguibile arbitrariamente). Ogni modifica è versionata con ritorno alla versione precedente.</td></tr>
         <tr><td>P4</td><td>API prima della UI</td><td>Il front-end usa solo l'API pubblica. Schemi in Zod da cui derivano validazione, OpenAPI 3 e descrizione delle operazioni. Eventi di dominio scritti in una tabella outbox nella stessa transazione e consegnati via webhook firmati con riconsegna.</td></tr>
         <tr><td>P5</td><td>Tracciabilità</td><td>Registro operazioni con attore (utente, integrazione, sistema), istante, comando, stato prima e dopo, nella stessa transazione. Intestazione <span class="mono">Idempotency-Key</span> obbligatoria sulle scritture via API; concorrenza ottimistica con numero di versione (409 in caso di conflitto). Numeratori fiscali con riga di contatore bloccata nella transazione di emissione: nessun salto, nessun duplicato.</td></tr>
-        <tr><td>P6</td><td>Installabile ovunque</td><td>Due bersagli dallo stesso codice: Cloudflare Workers + Supabase per l'istanza condivisa iniziale; immagine Docker e un file Compose (applicazione, worker, PostgreSQL, storage S3, PDF, Caddy) per server in affitto o installazione presso il cliente. La CI esegue i test su entrambi. Nel nucleo solo PostgreSQL standard e API S3; i servizi Cloudflare stanno dietro adattatori. Backup: PITR di Supabase più dump giornaliero cifrato su R2 (30 giorni); su server WAL continuo con pgBackRest. Prova di ripristino mensile con esito registrato.</td></tr>
+        <tr><td>P6</td><td>Installabile ovunque</td><td>Due bersagli dallo stesso codice: Cloudflare Workers + Supabase per l'istanza condivisa iniziale; immagine Docker e un file Compose (applicazione, worker, PostgreSQL, storage S3, PDF, Caddy) per server in affitto o installazione presso il cliente. La CI esegue i test su entrambi. Nel nucleo solo PostgreSQL standard e API S3; i servizi Cloudflare stanno dietro adattatori. Backup: dump orario cifrato su R2 in avvio, PITR di Supabase con la crescita, dump giornaliero conservato 30 giorni; su server WAL continuo con pgBackRest. Prova di ripristino mensile con esito registrato.</td></tr>
         <tr><td>P7</td><td>Adattatori</td><td>Interfacce interne per SdI e conservazione, posta, PDF, firma, pagamenti, storage, code e lavori pianificati. Ogni adattatore ha un'implementazione di prova usata nei test; cambiare fornitore significa scrivere un adattatore e cambiare configurazione.</td></tr>
         <tr><td>P8</td><td>Esperienza d'uso</td><td>Una UX/UI designer dedicata cura prototipo (WP0), design system e prove con utenti (WP10). I cinque compiti chiave sono provati con tre utenti del pilota sul prototipo e di nuovo prima del rilascio, con tempi obiettivo fissati in WP0.</td></tr>
         <tr><td>P9</td><td>Qualità verificabile</td><td>Scenari di accettazione scritti in WP0 per ogni pacchetto e trasformati in test di flusso Playwright; test di integrazione su PostgreSQL reale; tre ambienti separati; dati di esempio generati da script.</td></tr>
@@ -526,7 +526,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <tr><td>Documentazione di architettura, esercizio e uso; inventario delle dipendenze con licenze</td><td class="num">5</td><td class="num">€ 1.000</td></tr>
       <tr><td>Affiancamento al passaggio di consegne (due settimane, a tempo parziale)</td><td class="num">4</td><td class="num">€ 800</td></tr>
     </tbody></table></div>
-  <div class="mod-f"><div><b>Assunzioni</b>La verifica di sicurezza indipendente è affidata a terzi e quotata a parte (§ 09).</div><div><b>Rischi</b>Correzioni richieste dalla verifica indipendente: le assorbiamo fino a 5 giornate.</div></div>
+  <div class="mod-f"><div><b>Assunzioni</b>Lista di controllo ASVS L2 compilata da noi e consegnata con la documentazione.</div><div><b>Rischi</b>Requisiti di sicurezza aggiuntivi emersi dopo WP0, come certificazioni specifiche richieste da un cliente.</div></div>
 </section>
 
 <section class="mod">
@@ -577,7 +577,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
   <!-- 06 -->
   <section class="s pad">
     <div class="s-h"><span class="n">06</span><h2>Piano e milestone</h2></div>
-    <p class="lead">Avvio il 2 novembre 2026 con conferma d'ordine entro il 23 ottobre. Ogni milestone è una consegna in ambiente di prova con gli scenari di accettazione dei pacchetti eseguiti. Agosto è a capacità ridotta e dedicato a verifica di sicurezza e migrazione di prova finale.</p>
+    <p class="lead">Avvio il 2 novembre 2026 con conferma d'ordine entro il 23 ottobre. Ogni milestone è una consegna in ambiente di prova con gli scenari di accettazione dei pacchetti eseguiti. Agosto è a capacità ridotta e dedicato al collaudo complessivo e alla migrazione di prova finale.</p>
     <div class="gw"><div class="gantt">
       <div></div><div class="gmonths"><div class="gm">nov</div><div class="gm">dic</div><div class="gm">gen</div><div class="gm">feb</div><div class="gm">mar</div><div class="gm">apr</div><div class="gm">mag</div><div class="gm">giu</div><div class="gm">lug</div><div class="gm">ago</div><div class="gm">set</div><div class="gm">ott</div><div class="gm">nov</div></div>
       <div class="gl"><b>Analisi e prototipo</b><span>WP0 · 32 gg</span></div><div class="gtrack"><div class="gbar" style="grid-column:1 / 2"></div></div>
@@ -616,7 +616,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
         <tr><td class="mono">15 gen 2027</td><td>Domini gestiti su Cloudflare; server in affitto di prova per la verifica del trasloco (può essere spento dopo la prova)</td></tr>
         <tr><td class="mono">1 mar 2027</td><td>Contratto con l'intermediario SdI e credenziali dell'ambiente di prova; specifiche CBI della banca del pilota per le RiBa</td></tr>
         <tr><td class="mono">4 giu 2027</td><td>Tracciato di esportazione validato dal commercialista</td></tr>
-        <tr><td class="mono">12 lug 2027</td><td>Utenti del pilota per la seconda prova; incarico alla società della verifica di sicurezza indipendente</td></tr>
+        <tr><td class="mono">12 lug 2027</td><td>Utenti del pilota per la seconda prova</td></tr>
         <tr><td class="mono">27 ago 2027</td><td>Via libera al passaggio in produzione; blocco delle modifiche sul gestionale attuale per la migrazione finale</td></tr>
       </tbody>
     </table></div>
@@ -629,7 +629,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
       <thead><tr><th>Ambito</th><th>Come li verifichiamo</th></tr></thead>
       <tbody>
         <tr><td>Prestazioni e dimensioni</td><td class="dim">Paginazione e filtri lato server, indici per cliente; test di carico in M4 con 100 utenti concorrenti, catalogo da 100.000 articoli, 10 milioni di movimenti e 100 clienti generati; risultati allegati alla consegna.</td></tr>
-        <tr><td>Disponibilità e continuità</td><td class="dim">Fase 1: PITR di Supabase (RPO ≤ 1 h) e dump giornaliero cifrato su R2 conservato 30 giorni. Fase 2: WAL continuo e backup giornalieri. In entrambe prova di ripristino mensile cronometrata (RTO ≤ 4 h) e procedura di ritorno alla versione precedente documentata.</td></tr>
+        <tr><td>Disponibilità e continuità</td><td class="dim">Fase 1: dump orario cifrato su R2 in avvio e PITR di Supabase con la crescita (RPO ≤ 1 h), dump giornaliero conservato 30 giorni. Fase 2: WAL continuo e backup giornalieri. In entrambe prova di ripristino mensile cronometrata (RTO ≤ 4 h) e procedura di ritorno alla versione precedente documentata.</td></tr>
         <tr><td>Sicurezza</td><td class="dim">Lista di controllo ASVS L2 compilata e consegnata; TLS 1.2+, cifratura a riposo di volumi e backup, secondo fattore, segreti fuori dal codice, registrazione degli accessi.</td></tr>
         <tr><td>Protezione dei dati</td><td class="dim">Dati e backup in UE: Supabase in regione europea, bucket R2 con giurisdizione UE, accordi di trattamento dati con entrambi i fornitori. Esportazione e anonimizzazione per interessato nei limiti degli obblighi di conservazione; documentazione a supporto del registro dei trattamenti.</td></tr>
         <tr><td>Compatibilità e lingua</td><td class="dim">Ultime due versioni di Chrome, Edge, Firefox e Safari; tablet da 10"; italiano con testi esternalizzati e formati italiani.</td></tr>
@@ -682,14 +682,24 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
         <tr><td>WP0 — Analisi, architettura e prototipo</td><td class="dim">A corpo, fatturato alla consegna di M0</td><td class="num">€ 5.120</td></tr>
         <tr><td>WP1–WP12 — Versione 1</td><td class="dim">A corpo, confermato in M0 entro la forchetta; fatturato per milestone</td><td class="num">€ 71.840</td></tr>
         <tr><td>Tariffa per evoluzioni future (§ 6 della RDO)</td><td class="dim">Giornata-persona, € 25/h, per qualunque profilo</td><td class="num">€ 200/gg</td></tr>
-        <tr><td>Manutenzione correttiva e adeguativa</td><td class="dim">Canone annuo dopo il rilascio: dipendenze, adeguamenti normativi FatturaPA, patch di sicurezza, compatibilità con i fornitori integrati; fino a 4 gg/mese</td><td class="num">€ 9.600/anno</td></tr>
-        <tr><td>O9 — Hosting e gestione operativa</td><td class="dim">Aggiornamenti, monitoraggio, backup e prove di ripristino, assistenza di secondo livello; fino a 2 gg/mese</td><td class="num">€ 4.800/anno</td></tr>
-        <tr><td>Infrastruttura — fase 1, Cloudflare + Supabase</td><td class="dim">Al costo, account intestati al Committente: Supabase Pro con capacità adeguata e PITR, Cloudflare Workers Paid, R2. Stima indicativa</td><td class="num">€ 150–250/mese</td></tr>
-        <tr><td>Infrastruttura — fase 2, server in affitto UE</td><td class="dim">Al costo: server dedicato o cloud, storage per i backup. Stima indicativa per fino a 100 clienti</td><td class="num">€ 60–150/mese</td></tr>
-        <tr><td>Trasloco dalla fase 1 alla fase 2</td><td class="dim">Esecuzione della procedura già provata in WP11, in una finestra fuori orario</td><td class="num">≈ 2 gg · € 400</td></tr>
-        <tr><td>Verifica di sicurezza indipendente</td><td class="dim">Da affidare a una società terza per garantirne l'indipendenza; stima di mercato, non fatturata da noi</td><td class="num">€ 4.000–7.000</td></tr>
+        <tr><td>Manutenzione correttiva e adeguativa</td><td class="dim">Canone annuo dopo il rilascio, pari al 10% del prezzo della Versione 1: correzione dei difetti, aggiornamento delle dipendenze, adeguamenti normativi FatturaPA, patch di sicurezza, compatibilità con i fornitori integrati, rilascio tramite la pipeline automatica; fino a 3 gg/mese</td><td class="num">€ 7.696/anno</td></tr>
+        <tr><td>Trasloco dalla fase 1 alla fase 2</td><td class="dim">Su richiesta: esecuzione della procedura già provata in WP11, in una finestra fuori orario</td><td class="num">≈ 2 gg · € 400</td></tr>
       </tbody>
     </table></div>
+    <p class="note"><b>O9 — Hosting e gestione operativa: non offerto.</b> L'infrastruttura è intestata al Committente e da lui gestita (account, fatturazione dei fornitori, monitoraggio, incidenti infrastrutturali). Consegniamo pipeline di rilascio automatiche, avvisi già configurati, guida di esercizio e procedure di ripristino provate; i difetti del software restano coperti dalla manutenzione. Con Cloudflare e Supabase l'esercizio richiede poche ore al mese; con il passaggio a un server in affitto aumenta (sistema operativo, PostgreSQL, backup) e può essere richiesto a noi a tariffa evolutiva.</p>
+
+    <h3 class="sub3">Costi di infrastruttura per dimensione</h3>
+    <p class="lead">Costi dei fornitori, a carico del Committente e non fatturati da noi. "Aziende" sono i clienti di Noesis sull'istanza condivisa; "utenti" le persone che usano il gestionale. Ipotesi: in media 10 utenti per azienda, contemporanei circa il 10% degli utenti come nel § 5 della RDO, 5.000 documenti al mese per azienda.</p>
+    <div class="tw" style="margin-top:14px"><table>
+      <thead><tr><th>Fascia</th><th>Aziende</th><th>Utenti<br>(contemporanei)</th><th>Fase 1 — Cloudflare + Supabase</th><th>Fase 2 — server in affitto UE</th></tr></thead>
+      <tbody>
+        <tr><td><b>Avvio</b><br><span class="dim">pilota e primi clienti</span></td><td class="num">1–5</td><td class="num">fino a 50<br>(≈ 5)</td><td><b class="mono">≈ € 35–45/mese</b><br><span class="dim">Supabase Pro con capacità Small, Workers Paid, R2; backup orario su R2 al posto del PITR</span></td><td><b class="mono">≈ € 25–40/mese</b><br><span class="dim">Un server virtuale 4 vCPU / 16 GB e spazio per i backup. Il risparmio non giustifica la gestione</span></td></tr>
+        <tr><td><b>Crescita</b></td><td class="num">6–30</td><td class="num">fino a 300<br>(≈ 30)</td><td><b class="mono">≈ € 170–200/mese</b><br><span class="dim">Supabase Pro con capacità Medium e PITR 7 giorni (circa € 90 da solo), Workers, R2, PDF</span></td><td><b class="mono">≈ € 60–90/mese</b><br><span class="dim">Un server 8 vCPU / 32 GB e spazio per i backup</span></td></tr>
+        <tr><td><b>Obiettivo RDO</b></td><td class="num">31–100</td><td class="num">fino a 1.000<br>(≈ 100)</td><td><b class="mono">≈ € 260–350/mese</b><br><span class="dim">Supabase Pro con capacità Large o XL, PITR, 30–150 GB di dati, Workers e PDF per 500.000 documenti al mese</span></td><td><b class="mono">≈ € 130–220/mese</b><br><span class="dim">Due server dedicati (principale e replica) e spazio per i backup</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Stime indicative su listini pubblici di ottobre 2026, da riverificare all'avvio; dollari convertiti in euro. Esclusi intermediario SdI, invio e-mail e domini. Il passaggio alla fase 2 diventa interessante dalla fascia Crescita, quando il risparmio (€ 100–250 al mese) supera il costo di chi gestisce il server.</p>
+
     <p class="note">Tutti gli importi sono al netto di IVA. Ripartizione per milestone di WP1–WP12: M1 30%, M2 25%, M3 20%, M4 15%, M5 10% alla chiusura dell'esercizio assistito. Pagamento a 30 giorni data fattura.</p>
   </section>
 
@@ -718,6 +728,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;heig
           <li>Decisioni del Committente entro cinque giorni lavorativi dalla richiesta.</li>
           <li>Costi di fornitori terzi (hosting, intermediario, posta, domini) a carico del Committente.</li>
           <li>Correzione dei difetti inclusa per tutto l'esercizio assistito; poi rientra nel canone di manutenzione.</li>
+          <li>Esercizio dell'infrastruttura a carico del Committente (§ 09).</li>
         </ul>
         <h3 style="margin-top:22px">Che cosa chiediamo per riuscire</h3>
         <ul class="clean">
